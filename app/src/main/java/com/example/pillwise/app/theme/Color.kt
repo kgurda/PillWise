@@ -1,4 +1,4 @@
-package com.example.pillwise.ui.theme
+package com.example.pillwise.app.theme
 
 import androidx.compose.ui.graphics.Color
 

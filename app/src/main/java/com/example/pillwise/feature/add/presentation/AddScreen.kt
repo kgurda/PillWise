@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.browse.presentation
+package com.example.pillwise.feature.add.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,21 +11,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun BrowseScreen() {
+fun AddScreen() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red),
+            .background(Color.Green),
     ) {
         Text(
-            text = "Browse anything!",
+            text = "Add anything!",
         )
     }
 }
 
 @Preview
 @Composable
-private fun BrowseScreenPreview() {
-    BrowseScreen()
+private fun AddScreenPreview() {
+    AddScreen()
 }

@@ -1,4 +1,4 @@
-package com.example.pillwise.ui.theme
+package com.example.pillwise.app.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

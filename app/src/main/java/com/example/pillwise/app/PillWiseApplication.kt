@@ -1,4 +1,4 @@
-package com.example.pillwise
+package com.example.pillwise.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

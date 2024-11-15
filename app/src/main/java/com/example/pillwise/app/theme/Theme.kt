@@ -1,4 +1,4 @@
-package com.example.pillwise.ui.theme
+package com.example.pillwise.app.theme
 
 import android.app.Activity
 import android.os.Build
