@@ -3,16 +3,25 @@ package com.example.pillwise.login.data
 import com.example.pillwise.feature.login.data.LoginRepositoryImpl
 import org.junit.Test
 
-// you can use Truth, mockk, mockito etc - whatever you are comfortable with
 class LoginRepositoryImplTest {
 
     @Test
-    fun `test login somehow`() {
+    fun `should successfully login`() {
         val repository = LoginRepositoryImpl()
 
-        val result = repository.login()
+        val result = repository.login("admin", "admin")
 
         assert(result.isSuccess)
+    }
+
+    @Test
+    fun `should throw exception for invalid credentials`() {
+        val repository = LoginRepositoryImpl()
+
+        val result = repository.login("wrong-username", "wrong-password")
+
+        assert(result.isFailure)
+        assert(result.exceptionOrNull()?.message == "Invalid username or password")
     }
 
 }
