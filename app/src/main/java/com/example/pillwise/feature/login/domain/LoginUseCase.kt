@@ -8,7 +8,5 @@ import javax.inject.Inject
 class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
 ) {
-
-    fun execute() = loginRepository.login()
-
+    fun execute(username: String, password: String) = loginRepository.login(username, password)
 }
