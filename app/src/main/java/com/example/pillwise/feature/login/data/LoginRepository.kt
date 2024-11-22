@@ -1,26 +1,22 @@
 package com.example.pillwise.feature.login.data
 
-import com.example.pillwise.feature.login.data.model.LoginResultEntity
 import javax.inject.Inject
 
 interface LoginRepository {
 
-    // I used Result here just for simplicity, you can replace it with whatever
-    fun login(username: String, password: String): Result<LoginResultEntity>
+    fun login(username: String, password: String): Result<Unit>
 
 }
 
-// You can place this in another file, it doesn't matter
 internal class LoginRepositoryImpl @Inject constructor() : LoginRepository {
 
-    override fun login(username: String, password: String): Result<LoginResultEntity> {
-        // it will be changed in the future with connection to DB or api call
+    override fun login(username: String, password: String): Result<Unit> {
         val map = mapOf<String, String>(
             "admin" to "admin"
         )
         val shouldLogin = map[username] == password
         return if (shouldLogin) {
-            Result.success(LoginResultEntity("something"))
+            Result.success(Unit)
         } else {
             Result.failure(InvalidCredentialsException())
         }

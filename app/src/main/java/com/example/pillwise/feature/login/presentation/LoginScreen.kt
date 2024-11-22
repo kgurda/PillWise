@@ -1,11 +1,22 @@
 package com.example.pillwise.feature.login.presentation
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import com.example.pillwise.R
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -13,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
-import com.example.pillwise.ui.theme.PurpleGrey40
 
 @Composable
 fun LoginScreen(
@@ -23,18 +33,20 @@ fun LoginScreen(
 
     LoginScreen(
         uiState = uiState,
-        onLoginClick = { username, password -> viewModel.login(username, password) },
+        onUsernameChange = { username -> viewModel.setUsername(username)},
+        onPasswordChange = { password -> viewModel.setPassword(password)},
+        onLoginClick = { viewModel.login() },
     )
 }
 
 @Composable
 private fun LoginScreen(
     uiState: LoginUiState,
-    onLoginClick: (String, String) -> Unit,
+    onUsernameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -45,38 +57,37 @@ private fun LoginScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = "Login",
+                text = stringResource(id = R.string.login_page_title),
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
+                value = uiState.username,
+                onValueChange = {
+                    Log.d("test", it)
+                    onUsernameChange(it)
+                },
+                label = { Text(stringResource(R.string.username_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
 
             TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
+                value = uiState.password,
+                onValueChange = { onPasswordChange(it) },
+                label = { Text(stringResource(R.string.password_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
 
             Button(
-                onClick = { onLoginClick(username, password) },
+                onClick = { onLoginClick() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = username.isNotEmpty() && password.isNotEmpty(),
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = PurpleGrey40
-                )
+                enabled = uiState.username.isNotEmpty() && uiState.password.isNotEmpty()
             ) {
-                Text("Login")
+                Text(stringResource(R.string.login_button_name))
             }
 
             if (uiState.isLoading) {
@@ -86,7 +97,7 @@ private fun LoginScreen(
             if (!uiState.error.isNullOrEmpty()) {
                 Text(
                     fontSize = 14.sp,
-                    text = "Invalid username or password",
+                    text = uiState.error,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -100,6 +111,8 @@ private fun LoginScreen(
 private fun LoginScreenPreview() {
     LoginScreen(
         uiState = LoginUiState(),
-        onLoginClick = { _, _ -> },
+        onUsernameChange = { _ -> },
+        onPasswordChange = { _ -> },
+        onLoginClick = { -> },
     )
 }

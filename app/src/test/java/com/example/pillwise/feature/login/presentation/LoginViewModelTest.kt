@@ -1,27 +1,30 @@
-import com.example.pillwise.feature.login.data.model.LoginResultEntity
 import com.example.pillwise.feature.login.domain.LoginUseCase
 import com.example.pillwise.feature.login.presentation.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
 
     private lateinit var loginViewModel: LoginViewModel
-
-    private val loginUseCase: LoginUseCase = mock(LoginUseCase::class.java)
+    private lateinit var loginUseCase: LoginUseCase
 
     @Before
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
+        loginUseCase = mock()
         loginViewModel = LoginViewModel(loginUseCase)
     }
 
@@ -31,14 +34,40 @@ class LoginViewModelTest {
     }
 
     @Test
+    fun `setUsername updates username in uiState`() = runTest {
+        // Given
+        val username = "testUser"
+
+        // When
+        loginViewModel.setUsername(username)
+
+        // Then
+        assertEquals(username, loginViewModel.uiState.first().username)
+    }
+
+    @Test
+    fun `setPassword updates password in uiState`() = runTest {
+        // Given
+        val password = "testPassword"
+
+        // When
+        loginViewModel.setPassword(password)
+
+        // Then
+        assertEquals(password, loginViewModel.uiState.first().password)
+    }
+
+    @Test
     fun `login successful updates uiState to logged in`() = runTest {
-        // Arrange
-        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.success(LoginResultEntity("Something")))
+        // Given
+        loginViewModel.setPassword("testuser")
+        loginViewModel.setUsername("testpassword")
+        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.success(Unit))
 
-        // Act
-        loginViewModel.login("testuser", "testpassword")
+        // When
+        loginViewModel.login()
 
-        // Assert
+        // Then
         val uiState = loginViewModel.uiState.first()
         assertEquals(true, uiState.loggedIn)
         assertEquals(false, uiState.isLoading)
@@ -47,16 +76,19 @@ class LoginViewModelTest {
 
     @Test
     fun `login failure updates uiState to error`() = runTest {
-        // Arrange
-        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.failure(Exception("Login failed")))
+        // Given
+        val error = "Login failed"
+        loginViewModel.setPassword("testpassword")
+        loginViewModel.setUsername("testusername")
+        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.failure(Exception(error)))
 
-        // Act
-        loginViewModel.login("testuser", "testpassword")
+        // When
+        loginViewModel.login()
 
-        // Assert
+        // Then
         val uiState = loginViewModel.uiState.first()
         assertEquals(false, uiState.loggedIn)
         assertEquals(false, uiState.isLoading)
-        assertEquals("anything", uiState.error)
+        assertEquals(error, uiState.error)
     }
 }

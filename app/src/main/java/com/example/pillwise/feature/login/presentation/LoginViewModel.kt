@@ -18,7 +18,23 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    fun login(username: String, password: String) {
+    fun setUsername(username: String) {
+        _uiState.update {
+            it.copy(
+                username = username
+            )
+        }
+    }
+
+    fun setPassword(password: String) {
+        _uiState.update {
+            it.copy(
+                password = password
+            )
+        }
+    }
+
+    fun login() {
         _uiState.update {
             it.copy(
                 isLoading = true,
@@ -27,7 +43,7 @@ class LoginViewModel @Inject constructor(
             )
         }
 
-        loginUseCase.execute(username, password)
+        loginUseCase.execute(_uiState.value.username, _uiState.value.password)
             .onSuccess {
                 _uiState.update {
                     it.copy(
@@ -40,10 +56,9 @@ class LoginViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "anything",
+                        error = result.message,
                     )
                 }
             }
     }
-
 }
