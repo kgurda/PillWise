@@ -14,8 +14,8 @@ internal class LoginRepositoryImpl @Inject constructor() : LoginRepository {
         val map = mapOf<String, String>(
             "admin" to "admin"
         )
-        val shouldLogin = map[username] == password
-        return if (shouldLogin) {
+        val hasValidCredentials = map[username] == password
+        return if (hasValidCredentials) {
             Result.success(Unit)
         } else {
             Result.failure(InvalidCredentialsException())
