@@ -4,21 +4,19 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 class LoginUseCaseTest {
-    @Mock
-    private lateinit var mockLoginRepository: LoginRepository
 
+    private lateinit var loginRepository: LoginRepository
     private lateinit var loginUseCase: LoginUseCase
 
     @Before
     fun setUp() {
-        mockLoginRepository = mock()
-        loginUseCase = LoginUseCase(mockLoginRepository)
+        loginRepository = mock()
+        loginUseCase = LoginUseCase(loginRepository)
     }
 
     @Test
@@ -28,13 +26,13 @@ class LoginUseCaseTest {
         val password = "testPassword"
         val expectedResult = Result.success(Unit)
 
-        `when`(mockLoginRepository.login(username, password)).thenReturn(expectedResult)
+        `when`(loginRepository.login(username, password)).thenReturn(expectedResult)
 
         // When
         val result = loginUseCase.execute(username, password)
 
         // Then
-        verify(mockLoginRepository).login(username, password)
+        verify(loginRepository).login(username, password)
         assertTrue(result.isSuccess)
         assertEquals(expectedResult, result)
     }
@@ -46,7 +44,7 @@ class LoginUseCaseTest {
         val password = "testPassword"
         val expectedError = Throwable("Login failed")
 
-        `when`(mockLoginRepository.login(username, password)).thenReturn(Result.failure(expectedError))
+        `when`(loginRepository.login(username, password)).thenReturn(Result.failure(expectedError))
 
         // When
         val result = loginUseCase.execute(username, password)
