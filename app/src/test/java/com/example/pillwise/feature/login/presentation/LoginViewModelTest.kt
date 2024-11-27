@@ -34,7 +34,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `setUsername updates username in uiState`() = runTest {
+    fun `should update username in uiState`() = runTest {
         // Given
         val username = "testUser"
 
@@ -46,7 +46,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `setPassword updates password in uiState`() = runTest {
+    fun `should update password in uiState`() = runTest {
         // Given
         val password = "testPassword"
 
@@ -58,7 +58,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `login successful updates uiState to logged in`() = runTest {
+    fun `should update uiState when successfully logged in`() = runTest {
         // Given
         loginViewModel.setPassword("testuser")
         loginViewModel.setUsername("testpassword")
@@ -75,7 +75,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `login failure updates uiState to error`() = runTest {
+    fun `should update uiState when login failed`() = runTest {
         // Given
         val error = "Login failed"
         loginViewModel.setPassword("testpassword")

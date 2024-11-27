@@ -22,7 +22,7 @@ class LoginUseCaseTest {
     }
 
     @Test
-    fun `execute calls login on repository with correct parameters`() {
+    fun `should successfully login when repository returns success`() {
         // Given
         val username = "testUser"
         val password = "testPassword"
@@ -35,27 +35,12 @@ class LoginUseCaseTest {
 
         // Then
         verify(mockLoginRepository).login(username, password)
+        assertTrue(result.isSuccess)
         assertEquals(expectedResult, result)
     }
 
     @Test
-    fun `execute returns success result from repository`() {
-        // Given
-        val username = "testUser"
-        val password = "testPassword"
-        val expectedResult = Result.success(Unit)
-
-        `when`(mockLoginRepository.login(username, password)).thenReturn(expectedResult)
-
-        // When
-        val result = loginUseCase.execute(username, password)
-
-        // Then
-        assertTrue(result.isSuccess)
-    }
-
-    @Test
-    fun `execute returns failure result from repository`() {
+    fun `should return failure when exception is thrown from repository`() {
         // Given
         val username = "testUser"
         val password = "testPassword"
