@@ -28,6 +28,7 @@ import com.example.pillwise.feature.login.presentation.model.LoginUiState
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
+    onLoginSuccess: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -35,7 +36,9 @@ fun LoginScreen(
         uiState = uiState,
         onUsernameChange = { username -> viewModel.setUsername(username)},
         onPasswordChange = { password -> viewModel.setPassword(password)},
-        onLoginClick = { viewModel.login() },
+        onLoginClick = {
+            viewModel.login(onLoginSuccess)
+        },
     )
 }
 

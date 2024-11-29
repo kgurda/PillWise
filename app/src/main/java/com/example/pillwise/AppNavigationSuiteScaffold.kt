@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.pillwise.feature.home.presentation.HomeScreen
 import com.example.pillwise.feature.list.presentation.ListScreen
 import com.example.pillwise.feature.login.presentation.LoginScreen
@@ -27,6 +26,7 @@ fun AppNavigationSuiteScaffold() {
     var currentScreen by rememberSaveable { mutableStateOf(Screen.HOME) }
     val configuration = LocalConfiguration.current
     val isMobile = configuration.screenWidthDp < 600
+
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             Screen.entries.forEach {
@@ -37,20 +37,21 @@ fun AppNavigationSuiteScaffold() {
                             contentDescription = stringResource(it.label)
                         )
                     },
-                    label = {if (!isMobile) { Text(stringResource(it.label)) } else null},
+                    label = { if (!isMobile) Text(stringResource(it.label)) else null },
                     selected = it == currentScreen,
                     onClick = { currentScreen = it }
                 )
             }
-        },
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-
+        }
     ) {
         when (currentScreen) {
-            Screen.HOME -> HomeScreen()
+            Screen.HOME -> HomeScreen(
+                onNavigateToLogin = { currentScreen = Screen.LOGIN }
+            )
             Screen.LIST -> ListScreen()
-            Screen.LOGIN -> LoginScreen()
+            Screen.LOGIN -> LoginScreen(
+                onLoginSuccess = { currentScreen = Screen.LIST }
+            )
         }
     }
 }
@@ -60,7 +61,7 @@ enum class Screen(
     val icon: ImageVector
 ) {
     HOME(R.string.home, Icons.Default.Home),
-    LIST(R.string.list, Icons.AutoMirrored.Filled.List),
     LOGIN(R.string.login, Icons.Default.Lock),
+    LIST(R.string.list, Icons.AutoMirrored.Filled.List),
 }
 

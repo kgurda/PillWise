@@ -38,7 +38,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login() = viewModelScope.launch {
+    fun login(onLoginSuccess: () -> Unit) = viewModelScope.launch {
         _uiState.update {
             it.copy(
                 isLoading = true,
@@ -55,6 +55,7 @@ class LoginViewModel @Inject constructor(
                         loggedIn = true,
                     )
                 }
+                onLoginSuccess()
             }
             .onFailure { result ->
                 _uiState.update {
