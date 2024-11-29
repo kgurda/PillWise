@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pill Wise</string>
+    <string name="login_page_title">Login</string>
+    <string name="username_text_field">Username</string>
+    <string name="password_text_field">Password</string>
+    <string name="login_button_name">Login</string>
 </resources>
