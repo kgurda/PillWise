@@ -64,10 +64,7 @@ private fun LoginScreen(
 
             TextField(
                 value = uiState.username,
-                onValueChange = {
-                    Log.d("test", it)
-                    onUsernameChange(it)
-                },
+                onValueChange = { onUsernameChange(it) },
                 label = { Text(stringResource(R.string.username_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,

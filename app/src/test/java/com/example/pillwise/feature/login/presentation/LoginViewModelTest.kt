@@ -2,8 +2,8 @@ import com.example.pillwise.feature.login.domain.LoginUseCase
 import com.example.pillwise.feature.login.presentation.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -42,7 +42,7 @@ class LoginViewModelTest {
         loginViewModel.setUsername(username)
 
         // Then
-        assertEquals(username, loginViewModel.uiState.first().username)
+        assertEquals(username, loginViewModel.uiState.value.username)
     }
 
     @Test
@@ -54,7 +54,7 @@ class LoginViewModelTest {
         loginViewModel.setPassword(password)
 
         // Then
-        assertEquals(password, loginViewModel.uiState.first().password)
+        assertEquals(password, loginViewModel.uiState.value.password)
     }
 
     @Test
@@ -62,13 +62,15 @@ class LoginViewModelTest {
         // Given
         loginViewModel.setPassword("testuser")
         loginViewModel.setUsername("testpassword")
+
         `when`(loginUseCase.execute(any(), any())).thenReturn(Result.success(Unit))
 
         // When
         loginViewModel.login()
+        advanceUntilIdle()
 
         // Then
-        val uiState = loginViewModel.uiState.first()
+        val uiState = loginViewModel.uiState.value
         assertEquals(true, uiState.loggedIn)
         assertEquals(false, uiState.isLoading)
         assertEquals(null, uiState.error)
@@ -84,9 +86,10 @@ class LoginViewModelTest {
 
         // When
         loginViewModel.login()
+        advanceUntilIdle()
 
         // Then
-        val uiState = loginViewModel.uiState.first()
+        val uiState = loginViewModel.uiState.value
         assertEquals(false, uiState.loggedIn)
         assertEquals(false, uiState.isLoading)
         assertEquals(error, uiState.error)
