@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.pillwise.feature.login.presentation.LoginScreen
 import com.example.pillwise.ui.theme.PillWiseTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,9 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    // present navigation component here, just for setup project I just used LoginScreen
-                    
-                    LoginScreen()
+                    AppNavigationSuiteScaffold()
                 }
             }
         }

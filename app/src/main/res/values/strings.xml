@@ -4,4 +4,7 @@
     <string name="username_text_field">Username</string>
     <string name="password_text_field">Password</string>
     <string name="login_button_name">Login</string>
+    <string name="home">Home</string>
+    <string name="list">List</string>
+    <string name="login">Login</string>
 </resources>
