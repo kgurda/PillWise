@@ -82,7 +82,7 @@ private fun LoginScreen(
             Button(
                 onClick = { onLoginClick() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.username.isNotEmpty() && uiState.password.isNotEmpty()
+                enabled = (uiState.username.isNotEmpty() && uiState.password.isNotEmpty()) || uiState.isLoading == true
             ) {
                 Text(stringResource(R.string.login_button_name))
             }
