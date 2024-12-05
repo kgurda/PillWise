@@ -1,3 +1,4 @@
+import androidx.navigation.NavController
 import com.example.pillwise.feature.login.domain.LoginUseCase
 import com.example.pillwise.feature.login.presentation.LoginViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +21,13 @@ class LoginViewModelTest {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
+    private lateinit var navController: NavController
 
     @Before
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
         loginUseCase = mock()
+        navController = mock()
         loginViewModel = LoginViewModel(loginUseCase)
     }
 
@@ -74,6 +77,7 @@ class LoginViewModelTest {
         assertEquals(true, uiState.loggedIn)
         assertEquals(false, uiState.isLoading)
         assertEquals(null, uiState.error)
+//        navController.
     }
 
     @Test

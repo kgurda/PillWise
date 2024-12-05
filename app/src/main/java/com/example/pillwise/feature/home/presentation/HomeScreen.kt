@@ -10,10 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.pillwise.navigation.Screens
 
 @Composable
 fun HomeScreen(
-    onNavigateToLogin: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -22,7 +25,7 @@ fun HomeScreen(
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Button(onClick = onNavigateToLogin) {
+        Button(onClick = { navController.navigate(Screens.LOGIN.route) }) {
             Text("Go to Login")
         }
     }
@@ -32,6 +35,6 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen(
-        onNavigateToLogin = { },
+        navController = rememberNavController(),
     )
 }
