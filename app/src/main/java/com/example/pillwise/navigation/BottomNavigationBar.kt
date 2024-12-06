@@ -1,6 +1,5 @@
 package com.example.pillwise.navigation
 
-import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
@@ -11,7 +10,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -28,19 +27,29 @@ fun BottomNavigationBar(
     val configuration = LocalConfiguration.current
     val isMobile = configuration.screenWidthDp < 600
 
+    val routes = listOf(
+        PillWiseTopLevelRoute(R.string.home, Icons.Default.Home, HomeRoute),
+        PillWiseTopLevelRoute(R.string.login, Icons.Default.Lock, LoginRoute),
+        PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute),
+    )
+
     NavigationBar {
-        Screens.entries.forEach { screen ->
+        routes.forEach { topLevelRoute ->
             NavigationBarItem(
                 icon = {
                     Icon(
-                        screen.icon,
-                        contentDescription = stringResource(screen.label)
+                        topLevelRoute.icon,
+                        contentDescription = stringResource(topLevelRoute.name)
                     )
                 },
-                label = { if (!isMobile) Text(stringResource(screen.label)) else null },
-                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                label = { if (!isMobile) Text(stringResource(topLevelRoute.name)) else null },
+                selected = currentDestination?.hierarchy?.any {
+                    it.hasRoute(
+                        topLevelRoute.route::class
+                    )
+                } == true,
                 onClick = {
-                    navController.navigate(screen.route) {
+                    navController.navigate(topLevelRoute.route) {
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
@@ -52,14 +61,3 @@ fun BottomNavigationBar(
         }
     }
 }
-
-enum class Screens(
-    @StringRes val label: Int,
-    val icon: ImageVector,
-    val route: String
-) {
-    HOME(R.string.home, Icons.Default.Home, "home_route"),
-    LOGIN(R.string.login, Icons.Default.Lock, "login_route"),
-    LIST(R.string.list, Icons.AutoMirrored.Filled.List, "list_route"),
-}
-

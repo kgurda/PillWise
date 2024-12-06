@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.example.pillwise.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +24,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
+import com.example.pillwise.navigation.ListRoute
 
 @Composable
 fun LoginScreen(
+    navController: NavController,
     viewModel: LoginViewModel = viewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(uiState.loggedIn) {
+        if (uiState.loggedIn) {
+            navController.navigate(ListRoute)
+            viewModel.consumeLoginAction()
+        }
+    }
 
     LoginScreen(
         uiState = uiState,
@@ -49,7 +61,6 @@ private fun LoginScreen(
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize().padding(16.dp),
@@ -108,5 +119,7 @@ private fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        navController = rememberNavController()
+    )
 }

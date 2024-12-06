@@ -2,10 +2,8 @@ package com.example.pillwise.feature.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.pillwise.feature.login.domain.LoginUseCase
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
-import com.example.pillwise.navigation.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-//    private val navController: NavController,
     private val loginUseCase: LoginUseCase,
 ) : ViewModel() {
 
@@ -58,7 +55,6 @@ class LoginViewModel @Inject constructor(
                         loggedIn = true,
                     )
                 }
-//                navController.navigate(Screens.LIST.route)
             }
             .onFailure { result ->
                 _uiState.update {
@@ -68,5 +64,13 @@ class LoginViewModel @Inject constructor(
                     )
                 }
             }
+    }
+
+    fun consumeLoginAction() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                loggedIn = false
+            )
+        }
     }
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.pillwise.navigation.Screens
+import com.example.pillwise.navigation.LoginRoute
 
 @Composable
 fun HomeScreen(
@@ -25,7 +25,7 @@ fun HomeScreen(
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Button(onClick = { navController.navigate(Screens.LOGIN.route) }) {
+        Button(onClick = { navController.navigate(LoginRoute) }) {
             Text("Go to Login")
         }
     }

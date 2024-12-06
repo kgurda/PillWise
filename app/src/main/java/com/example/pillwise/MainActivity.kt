@@ -22,7 +22,9 @@ import com.example.pillwise.feature.home.presentation.HomeScreen
 import com.example.pillwise.feature.list.presentation.ListScreen
 import com.example.pillwise.feature.login.presentation.LoginScreen
 import com.example.pillwise.feature.login.presentation.LoginViewModel
-import com.example.pillwise.navigation.Screens
+import com.example.pillwise.navigation.HomeRoute
+import com.example.pillwise.navigation.ListRoute
+import com.example.pillwise.navigation.LoginRoute
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,17 +50,17 @@ class MainActivity : ComponentActivity() {
                     ) { paddingValues ->
                         NavHost(
                             navController = navController,
-                            startDestination = Screens.HOME.route,
+                            startDestination = HomeRoute,
                             modifier = Modifier.padding(paddingValues = paddingValues)) {
-                            composable(Screens.HOME.route) {
+                            composable<HomeRoute> {
                                 HomeScreen(navController)
                             }
-                            composable(Screens.LIST.route) {
+                            composable<ListRoute> {
                                 ListScreen(navController)
                             }
-                            composable(Screens.LOGIN.route) {
+                            composable<LoginRoute> {
                                 val viewModel = hiltViewModel<LoginViewModel>()
-                                LoginScreen(viewModel)
+                                LoginScreen(navController, viewModel)
                             }
                         }
                     }
