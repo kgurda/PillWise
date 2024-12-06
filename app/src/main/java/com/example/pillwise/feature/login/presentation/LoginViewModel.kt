@@ -65,4 +65,12 @@ class LoginViewModel @Inject constructor(
                 }
             }
     }
+
+    fun consumeLoginAction() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                loggedIn = false
+            )
+        }
+    }
 }
