@@ -1,4 +1,4 @@
-package com.example.pillwise.navigation
+package com.example.pillwise.navigation.routes
 
 import kotlinx.serialization.Serializable
 

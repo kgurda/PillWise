@@ -18,13 +18,15 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pillwise.feature.creation.presentation.CreationScreen
 import com.example.pillwise.feature.home.presentation.HomeScreen
 import com.example.pillwise.feature.list.presentation.ListScreen
 import com.example.pillwise.feature.login.presentation.LoginScreen
 import com.example.pillwise.feature.login.presentation.LoginViewModel
-import com.example.pillwise.navigation.HomeRoute
-import com.example.pillwise.navigation.ListRoute
-import com.example.pillwise.navigation.LoginRoute
+import com.example.pillwise.navigation.routes.CreationRoute
+import com.example.pillwise.navigation.routes.HomeRoute
+import com.example.pillwise.navigation.routes.ListRoute
+import com.example.pillwise.navigation.routes.LoginRoute
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -61,6 +63,9 @@ class MainActivity : ComponentActivity() {
                             composable<LoginRoute> {
                                 val viewModel = hiltViewModel<LoginViewModel>()
                                 LoginScreen(navController, viewModel)
+                            }
+                            composable<CreationRoute> {
+                                CreationScreen(navController)
                             }
                         }
                     }

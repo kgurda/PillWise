@@ -17,6 +17,9 @@ fun ListScreen(
         fontSize = 14.sp,
         text = "List screen",
     )
+//    medicines.forEach { medicine ->
+//        Text(medicine.name)
+//    }
 }
 
 @Preview

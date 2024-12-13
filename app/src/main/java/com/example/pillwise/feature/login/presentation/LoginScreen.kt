@@ -1,6 +1,5 @@
 package com.example.pillwise.feature.login.presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
-import com.example.pillwise.navigation.ListRoute
+import com.example.pillwise.navigation.routes.ListRoute
 
 @Composable
 fun LoginScreen(

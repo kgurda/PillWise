@@ -2,6 +2,8 @@ package com.example.pillwise.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +19,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.pillwise.R
+import com.example.pillwise.navigation.routes.CreationRoute
+import com.example.pillwise.navigation.routes.HomeRoute
+import com.example.pillwise.navigation.routes.ListRoute
+import com.example.pillwise.navigation.routes.LoginRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +37,7 @@ fun BottomNavigationBar(
         PillWiseTopLevelRoute(R.string.home, Icons.Default.Home, HomeRoute),
         PillWiseTopLevelRoute(R.string.login, Icons.Default.Lock, LoginRoute),
         PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute),
+        PillWiseTopLevelRoute(R.string.creation, Icons.Default.AddCircle, CreationRoute),
     )
 
     NavigationBar {
