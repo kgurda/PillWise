@@ -1,9 +1,11 @@
-package com.example.pillwise.feature.creation.presentation
+package com.example.pillwise.feature.medicine.presentation
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pillwise.feature.creation.presentation.model.CreationUiState
+import com.example.pillwise.data.local.entities.Medicine
+import com.example.pillwise.feature.medicine.presentation.data.MedicineRepository
+import com.example.pillwise.feature.medicine.presentation.model.CreationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreationViewModel @Inject constructor(
+class MedicineViewModel @Inject constructor(
+    private val medicineRepository: MedicineRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CreationUiState())
     val uiState: StateFlow<CreationUiState> = _uiState.asStateFlow()
@@ -45,7 +48,9 @@ class CreationViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(capturedImage = image)
     }
 
-    fun create(): Boolean {
+    fun getAll() = medicineRepository.getAll()
+
+    fun create() = viewModelScope.launch {
         _uiState.update {
             it.copy(
                 isLoading = true
@@ -53,8 +58,8 @@ class CreationViewModel @Inject constructor(
         }
 
         val currentState = _uiState.value
-        val isNameValid = currentState.name.isNotBlank()
-        val isExpirationDateValid = currentState.expirationDate.isNotBlank()
+        val isNameValid = currentState.name.isNotEmpty()
+        val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
 
         _uiState.value = currentState.copy(
             isNameValid = isNameValid,
@@ -63,7 +68,16 @@ class CreationViewModel @Inject constructor(
             created = isNameValid && isExpirationDateValid
         )
 
-        return isNameValid && isExpirationDateValid
+        if (isNameValid && isExpirationDateValid) {
+            medicineRepository.create(
+                Medicine(
+                    name = currentState.name,
+                    expirationDate = currentState.expirationDate,
+                    comment = currentState.comment,
+                    // TODO it is temporary, the logic to upload photo will be implemented
+                    image = currentState.capturedImage.toString()
+            ))
+        }
     }
 
     fun consumeCreatedAction() = viewModelScope.launch {

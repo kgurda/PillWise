@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.creation.presentation.model
+package com.example.pillwise.feature.medicine.presentation.model
 
 import android.graphics.Bitmap
 

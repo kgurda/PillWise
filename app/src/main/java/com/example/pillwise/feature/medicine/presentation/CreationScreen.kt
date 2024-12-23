@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.creation.presentation
+package com.example.pillwise.feature.medicine.presentation
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
@@ -40,14 +40,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.pillwise.feature.creation.presentation.model.CreationUiState
+import com.example.pillwise.feature.medicine.presentation.model.CreationUiState
 import com.example.pillwise.navigation.routes.ListRoute
 import java.util.Calendar
 
 @Composable
 fun CreationScreen(
     navController: NavController,
-    viewModel: CreationViewModel = viewModel(),
+    viewModel: MedicineViewModel = viewModel(),
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -125,8 +125,6 @@ fun CreationForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Take Photo Button
-
         uiState.capturedImage?.let { bitmap ->
             Image(
                 bitmap = bitmap.asImageBitmap(),
@@ -147,7 +145,6 @@ fun CreationForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Expiration Date Picker
         TextField(
             value = uiState.expirationDate,
             onValueChange = {},
