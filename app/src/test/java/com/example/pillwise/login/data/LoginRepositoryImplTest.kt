@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Test
 
 class LoginRepositoryImplTest {
-
     private lateinit var repository: LoginRepository
 
     @Before
@@ -32,5 +31,4 @@ class LoginRepositoryImplTest {
         assert(result.isFailure)
         assert(result.exceptionOrNull()?.message == "Invalid username or password")
     }
-
 }

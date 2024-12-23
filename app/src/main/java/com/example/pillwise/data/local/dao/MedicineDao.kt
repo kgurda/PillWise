@@ -8,7 +8,6 @@ import com.example.pillwise.data.local.entities.Medicine
 
 @Dao
 interface MedicineDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicine: Medicine)
 

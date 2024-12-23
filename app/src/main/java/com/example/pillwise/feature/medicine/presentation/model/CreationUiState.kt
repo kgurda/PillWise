@@ -11,5 +11,5 @@ data class CreationUiState(
     var photoUri: String? = null,
     var isLoading: Boolean = false,
     var capturedImage: Bitmap? = null,
-    var created: Boolean = false
+    var created: Boolean = false,
 )

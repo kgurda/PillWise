@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.example.pillwise.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,17 +20,18 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pillwise.R
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
 import com.example.pillwise.navigation.routes.ListRoute
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = viewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -44,8 +44,8 @@ fun LoginScreen(
 
     LoginScreen(
         uiState = uiState,
-        onUsernameChange = { username -> viewModel.setUsername(username)},
-        onPasswordChange = { password -> viewModel.setPassword(password)},
+        onUsernameChange = { username -> viewModel.setUsername(username) },
+        onPasswordChange = { password -> viewModel.setPassword(password) },
         onLoginClick = {
             viewModel.login()
         },
@@ -71,7 +71,7 @@ private fun LoginScreen(
             Text(
                 text = stringResource(id = R.string.login_page_title),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
 
             TextField(
@@ -88,13 +88,13 @@ private fun LoginScreen(
                 label = { Text(stringResource(R.string.password_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
             )
 
             Button(
                 onClick = { onLoginClick() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = (uiState.username.isNotEmpty() && uiState.password.isNotEmpty()) || uiState.isLoading == true
+                enabled = (uiState.username.isNotEmpty() && uiState.password.isNotEmpty()) || uiState.isLoading == true,
             ) {
                 Text(stringResource(R.string.login_button_name))
             }
@@ -108,7 +108,7 @@ private fun LoginScreen(
                     fontSize = 14.sp,
                     text = uiState.error,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
         }
@@ -119,6 +119,6 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(),
     )
 }

@@ -15,77 +15,85 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MedicineViewModel @Inject constructor(
-    private val medicineRepository: MedicineRepository
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(CreationUiState())
-    val uiState: StateFlow<CreationUiState> = _uiState.asStateFlow()
+class MedicineViewModel
+    @Inject
+    constructor(
+        private val medicineRepository: MedicineRepository,
+    ) : ViewModel() {
+        private val _uiState = MutableStateFlow(CreationUiState())
+        val uiState: StateFlow<CreationUiState> = _uiState.asStateFlow()
 
-    fun updateName(name: String) {
-        _uiState.value = _uiState.value.copy(
-            name = name,
-            isNameValid = true,
-            isLoading = false
-        )
-    }
-
-    fun updateExpirationDate(date: String) {
-        _uiState.value = _uiState.value.copy(
-            expirationDate = date,
-            isExpirationDateValid = true,
-            isLoading = false
-        )
-    }
-
-    fun updateComment(comment: String) {
-        _uiState.value = _uiState.value.copy(
-            comment = comment,
-            isLoading = false
-        )
-    }
-
-    fun uploadPhoto(image: Bitmap) {
-        _uiState.value = _uiState.value.copy(capturedImage = image)
-    }
-
-    fun getAll() = medicineRepository.getAll()
-
-    fun create() = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                isLoading = true
-            )
+        fun updateName(name: String) {
+            _uiState.value =
+                _uiState.value.copy(
+                    name = name,
+                    isNameValid = true,
+                    isLoading = false,
+                )
         }
 
-        val currentState = _uiState.value
-        val isNameValid = currentState.name.isNotEmpty()
-        val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
-
-        _uiState.value = currentState.copy(
-            isNameValid = isNameValid,
-            isExpirationDateValid = isExpirationDateValid,
-            isLoading = false,
-            created = isNameValid && isExpirationDateValid
-        )
-
-        if (isNameValid && isExpirationDateValid) {
-            medicineRepository.create(
-                Medicine(
-                    name = currentState.name,
-                    expirationDate = currentState.expirationDate,
-                    comment = currentState.comment,
-                    // TODO it is temporary, the logic to upload photo will be implemented
-                    image = currentState.capturedImage.toString()
-            ))
+        fun updateExpirationDate(date: String) {
+            _uiState.value =
+                _uiState.value.copy(
+                    expirationDate = date,
+                    isExpirationDateValid = true,
+                    isLoading = false,
+                )
         }
-    }
 
-    fun consumeCreatedAction() = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                created = false
-            )
+        fun updateComment(comment: String) {
+            _uiState.value =
+                _uiState.value.copy(
+                    comment = comment,
+                    isLoading = false,
+                )
         }
-    }
 
-}
+        fun uploadPhoto(image: Bitmap) {
+            _uiState.value = _uiState.value.copy(capturedImage = image)
+        }
+
+        fun getAll() = medicineRepository.getAll()
+
+        fun create() =
+            viewModelScope.launch {
+                _uiState.update {
+                    it.copy(
+                        isLoading = true,
+                    )
+                }
+
+                val currentState = _uiState.value
+                val isNameValid = currentState.name.isNotEmpty()
+                val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
+
+                _uiState.value =
+                    currentState.copy(
+                        isNameValid = isNameValid,
+                        isExpirationDateValid = isExpirationDateValid,
+                        isLoading = false,
+                        created = isNameValid && isExpirationDateValid,
+                    )
+
+                if (isNameValid && isExpirationDateValid) {
+                    medicineRepository.create(
+                        Medicine(
+                            name = currentState.name,
+                            expirationDate = currentState.expirationDate,
+                            comment = currentState.comment,
+                            // TODO it is temporary, the logic to upload photo will be implemented
+                            image = currentState.capturedImage.toString(),
+                        ),
+                    )
+                }
+            }
+
+        fun consumeCreatedAction() =
+            viewModelScope.launch {
+                _uiState.update {
+                    it.copy(
+                        created = false,
+                    )
+                }
+            }
+    }

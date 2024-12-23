@@ -16,6 +16,7 @@ navigation-compose = "2.8.4"
 hilt-navigation-compose = "1.2.0"
 serialization = "1.7.3"
 room = "2.6.1"
+ktlint = "12.1.2"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -49,3 +50,4 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

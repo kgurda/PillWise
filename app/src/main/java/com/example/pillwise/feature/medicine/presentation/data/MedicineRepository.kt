@@ -6,16 +6,18 @@ import javax.inject.Inject
 
 interface MedicineRepository {
     suspend fun create(medicine: Medicine)
+
     fun getAll(): List<Medicine>
 }
 
-internal class MedicineRepositoryImpl @Inject constructor(
-    private val medicineDao: MedicineDao
-): MedicineRepository {
+internal class MedicineRepositoryImpl
+    @Inject
+    constructor(
+        private val medicineDao: MedicineDao,
+    ) : MedicineRepository {
+        override suspend fun create(medicine: Medicine) {
+            medicineDao.insert(medicine)
+        }
 
-    override suspend fun create(medicine: Medicine) {
-        medicineDao.insert(medicine)
+        override fun getAll() = medicineDao.getAll()
     }
-
-    override fun getAll() = medicineDao.getAll()
-}

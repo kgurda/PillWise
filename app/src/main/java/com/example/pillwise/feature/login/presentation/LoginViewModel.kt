@@ -13,64 +13,67 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
-) : ViewModel() {
+class LoginViewModel
+    @Inject
+    constructor(
+        private val loginUseCase: LoginUseCase,
+    ) : ViewModel() {
+        private val _uiState = MutableStateFlow(LoginUiState())
+        val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
-
-    fun setUsername(username: String) {
-        _uiState.update {
-            it.copy(
-                username = username,
-                error = null
-            )
-        }
-    }
-
-    fun setPassword(password: String) {
-        _uiState.update {
-            it.copy(
-                password = password,
-                error = null
-            )
-        }
-    }
-
-    fun login() = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                isLoading = true,
-                loggedIn = false,
-                error = null,
-            )
+        fun setUsername(username: String) {
+            _uiState.update {
+                it.copy(
+                    username = username,
+                    error = null,
+                )
+            }
         }
 
-        loginUseCase.execute(_uiState.value.username, _uiState.value.password)
-            .onSuccess {
+        fun setPassword(password: String) {
+            _uiState.update {
+                it.copy(
+                    password = password,
+                    error = null,
+                )
+            }
+        }
+
+        fun login() =
+            viewModelScope.launch {
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        loggedIn = true,
+                        isLoading = true,
+                        loggedIn = false,
+                        error = null,
+                    )
+                }
+
+                loginUseCase.execute(_uiState.value.username, _uiState.value.password)
+                    .onSuccess {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                loggedIn = true,
+                            )
+                        }
+                    }
+                    .onFailure { result ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = result.message,
+                            )
+                        }
+                    }
+            }
+
+        fun consumeLoginAction() =
+            viewModelScope.launch {
+                _uiState.update {
+                    it.copy(
+                        loggedIn = false,
                     )
                 }
             }
-            .onFailure { result ->
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = result.message,
-                    )
-                }
-            }
     }
-
-    fun consumeLoginAction() = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                loggedIn = false
-            )
-        }
-    }
-}

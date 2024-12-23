@@ -60,10 +60,11 @@ fun CreationScreen(
     }
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        contentAlignment = Alignment.Center,
     ) {
         CreationForm(
             uiState,
@@ -71,7 +72,7 @@ fun CreationScreen(
             updateExpirationDate = { date -> viewModel.updateExpirationDate(date) },
             updateName = { name -> viewModel.updateName(name) },
             updateComment = { comment -> viewModel.updateComment(comment) },
-            create = {  -> viewModel.create() }
+            create = { -> viewModel.create() },
         )
     }
 }
@@ -83,15 +84,16 @@ fun CreationForm(
     updateExpirationDate: (String) -> Unit,
     updateName: (String) -> Unit,
     updateComment: (String) -> Unit,
-    create: () -> Unit
+    create: () -> Unit,
 ) {
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
 
-    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        if (bitmap != null) {
-            uploadPhoto(bitmap)
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            if (bitmap != null) {
+                uploadPhoto(bitmap)
+            }
         }
-    }
 
     if (showDatePicker) {
         DatePicker(
@@ -99,27 +101,28 @@ fun CreationForm(
                 updateExpirationDate(selectedDate)
                 showDatePicker = false
             },
-            onDismiss = { showDatePicker = false }
+            onDismiss = { showDatePicker = false },
         )
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextField(
             value = uiState.name,
             onValueChange = { updateName(it) },
             label = { Text("Medicine Name") },
             modifier = Modifier.fillMaxWidth(),
-            isError = !uiState.isNameValid
+            isError = !uiState.isNameValid,
         )
         if (!uiState.isNameValid) {
             Text(
-                text = "Name cannot be empty"
+                text = "Name cannot be empty",
             )
         }
 
@@ -129,16 +132,17 @@ fun CreationForm(
             Image(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = "Captured Image",
-                modifier = Modifier
-                    .size(200.dp)
-                    .padding(bottom = 16.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                modifier =
+                    Modifier
+                        .size(200.dp)
+                        .padding(bottom = 16.dp)
+                        .clip(RoundedCornerShape(8.dp)),
             )
         }
 
         Button(
             onClick = { cameraLauncher.launch(null) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Take Photo")
         }
@@ -156,14 +160,14 @@ fun CreationForm(
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
+                        contentDescription = "Select date",
                     )
                 }
             },
         )
         if (!uiState.isExpirationDateValid) {
             Text(
-                text = "Expiration Date cannot be empty"
+                text = "Expiration Date cannot be empty",
             )
         }
 
@@ -174,7 +178,7 @@ fun CreationForm(
             value = uiState.comment,
             onValueChange = { updateComment(it) },
             label = { Text("Comment") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -183,7 +187,7 @@ fun CreationForm(
         Button(
             onClick = { create() },
             modifier = Modifier.fillMaxWidth(),
-            enabled = (uiState.name.isNotEmpty() && uiState.expirationDate.isNotEmpty()) || uiState.isLoading == true
+            enabled = (uiState.name.isNotEmpty() && uiState.expirationDate.isNotEmpty()) || uiState.isLoading == true,
         ) {
             Text("Create")
         }
@@ -191,14 +195,13 @@ fun CreationForm(
         if (uiState.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
-
     }
 }
 
 @Composable
 fun DatePicker(
     onDateSelected: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -214,7 +217,7 @@ fun DatePicker(
         },
         year,
         month,
-        day
+        day,
     ).apply {
         setOnDismissListener { onDismiss() }
         show()

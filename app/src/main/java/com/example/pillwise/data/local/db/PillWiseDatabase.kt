@@ -7,6 +7,5 @@ import com.example.pillwise.data.local.entities.Medicine
 
 @Database(entities = [Medicine::class], version = 1)
 abstract class PillWiseDatabase : RoomDatabase() {
-
     abstract fun medicineDao(): MedicineDao
 }

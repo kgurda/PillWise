@@ -10,8 +10,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class MedicineModule {
-
     @Binds
-    internal abstract fun bindMedicineRepository(impl: MedicineRepositoryImpl) : MedicineRepository
-
+    internal abstract fun bindMedicineRepository(impl: MedicineRepositoryImpl): MedicineRepository
 }

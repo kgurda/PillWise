@@ -17,7 +17,6 @@ import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
-
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
 
@@ -34,64 +33,68 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `should update username in uiState`() = runTest {
-        // Given
-        val username = "testUser"
+    fun `should update username in uiState`() =
+        runTest {
+            // Given
+            val username = "testUser"
 
-        // When
-        loginViewModel.setUsername(username)
+            // When
+            loginViewModel.setUsername(username)
 
-        // Then
-        assertEquals(username, loginViewModel.uiState.value.username)
-    }
-
-    @Test
-    fun `should update password in uiState`() = runTest {
-        // Given
-        val password = "testPassword"
-
-        // When
-        loginViewModel.setPassword(password)
-
-        // Then
-        assertEquals(password, loginViewModel.uiState.value.password)
-    }
+            // Then
+            assertEquals(username, loginViewModel.uiState.value.username)
+        }
 
     @Test
-    fun `should update uiState when successfully logged in`() = runTest {
-        // Given
-        loginViewModel.setPassword("testuser")
-        loginViewModel.setUsername("testpassword")
+    fun `should update password in uiState`() =
+        runTest {
+            // Given
+            val password = "testPassword"
 
-        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.success(Unit))
+            // When
+            loginViewModel.setPassword(password)
 
-        // When
-        loginViewModel.login()
-        advanceUntilIdle()
-
-        // Then
-        val uiState = loginViewModel.uiState.value
-        assertEquals(true, uiState.loggedIn)
-        assertEquals(false, uiState.isLoading)
-        assertEquals(null, uiState.error)
-    }
+            // Then
+            assertEquals(password, loginViewModel.uiState.value.password)
+        }
 
     @Test
-    fun `should update uiState when login failed`() = runTest {
-        // Given
-        val error = "Login failed"
-        loginViewModel.setPassword("testpassword")
-        loginViewModel.setUsername("testusername")
-        `when`(loginUseCase.execute(any(), any())).thenReturn(Result.failure(Exception(error)))
+    fun `should update uiState when successfully logged in`() =
+        runTest {
+            // Given
+            loginViewModel.setPassword("testuser")
+            loginViewModel.setUsername("testpassword")
 
-        // When
-        loginViewModel.login()
-        advanceUntilIdle()
+            `when`(loginUseCase.execute(any(), any())).thenReturn(Result.success(Unit))
 
-        // Then
-        val uiState = loginViewModel.uiState.value
-        assertEquals(false, uiState.loggedIn)
-        assertEquals(false, uiState.isLoading)
-        assertEquals(error, uiState.error)
-    }
+            // When
+            loginViewModel.login()
+            advanceUntilIdle()
+
+            // Then
+            val uiState = loginViewModel.uiState.value
+            assertEquals(true, uiState.loggedIn)
+            assertEquals(false, uiState.isLoading)
+            assertEquals(null, uiState.error)
+        }
+
+    @Test
+    fun `should update uiState when login failed`() =
+        runTest {
+            // Given
+            val error = "Login failed"
+            loginViewModel.setPassword("testpassword")
+            loginViewModel.setUsername("testusername")
+            `when`(loginUseCase.execute(any(), any())).thenReturn(Result.failure(Exception(error)))
+
+            // When
+            loginViewModel.login()
+            advanceUntilIdle()
+
+            // Then
+            val uiState = loginViewModel.uiState.value
+            assertEquals(false, uiState.loggedIn)
+            assertEquals(false, uiState.isLoading)
+            assertEquals(error, uiState.error)
+        }
 }

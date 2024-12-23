@@ -9,5 +9,5 @@ data class Medicine(
     val name: String,
     val expirationDate: String,
     val comment: String?,
-    val image: String?
+    val image: String?,
 )

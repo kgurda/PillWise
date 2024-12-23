@@ -15,47 +15,50 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Primary40,
-    secondary = Secondary40,
-    tertiary = Accent40,
-    background = BackgroundDark,
-    surface = SurfaceDark,
-    onPrimary = OnPrimaryDark,
-    onSecondary = OnPrimaryDark,
-    onTertiary = OnPrimaryDark,
-    onBackground = OnBackgroundDark,
-    onSurface = OnBackgroundDark
-)
+private val DarkColorScheme =
+    darkColorScheme(
+        primary = Primary40,
+        secondary = Secondary40,
+        tertiary = Accent40,
+        background = BackgroundDark,
+        surface = SurfaceDark,
+        onPrimary = OnPrimaryDark,
+        onSecondary = OnPrimaryDark,
+        onTertiary = OnPrimaryDark,
+        onBackground = OnBackgroundDark,
+        onSurface = OnBackgroundDark,
+    )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Primary80,
-    secondary = Secondary80,
-    tertiary = Accent80,
-    background = BackgroundLight,
-    surface = SurfaceLight,
-    onPrimary = OnPrimaryLight,
-    onSecondary = OnPrimaryLight,
-    onTertiary = OnPrimaryLight,
-    onBackground = OnBackgroundLight,
-    onSurface = OnBackgroundLight
-)
+private val LightColorScheme =
+    lightColorScheme(
+        primary = Primary80,
+        secondary = Secondary80,
+        tertiary = Accent80,
+        background = BackgroundLight,
+        surface = SurfaceLight,
+        onPrimary = OnPrimaryLight,
+        onSecondary = OnPrimaryLight,
+        onTertiary = OnPrimaryLight,
+        onBackground = OnBackgroundLight,
+        onSurface = OnBackgroundLight,
+    )
 
 @Composable
 fun PillWiseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme =
+        when {
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val context = LocalContext.current
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+            darkTheme -> DarkColorScheme
+            else -> LightColorScheme
+        }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -68,6 +71,6 @@ fun PillWiseTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

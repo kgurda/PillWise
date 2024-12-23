@@ -13,13 +13,14 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RoomModule {
-
     @Provides
-    fun providePillWiseDatabase(@ApplicationContext context: Context): PillWiseDatabase {
+    fun providePillWiseDatabase(
+        @ApplicationContext context: Context,
+    ): PillWiseDatabase {
         return Room.databaseBuilder(
             context,
             PillWiseDatabase::class.java,
-            "pill_wise_database"
+            "pill_wise_database",
         ).allowMainThreadQueries().build()
     }
 
