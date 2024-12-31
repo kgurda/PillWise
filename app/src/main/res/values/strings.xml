@@ -22,4 +22,5 @@
     <string name="medicine_expiration_date_column_title">Expiration Date</string>
     <string name="medicine_comment_column_title">Comment</string>
     <string name="medicine_comment_placeholder" />
+    <string name="create_medicine_button" >Create medicine</string>
 </resources>

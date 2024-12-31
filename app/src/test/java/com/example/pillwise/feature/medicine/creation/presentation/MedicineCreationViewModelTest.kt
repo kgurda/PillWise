@@ -37,116 +37,123 @@ class MedicineCreationViewModelTest {
     }
 
     @Test
-    fun `should update name in uiState`() = runTest {
-        // Given
-        val name = "Aspirin"
+    fun `should update name in uiState`() =
+        runTest {
+            // Given
+            val name = "Aspirin"
 
-        // When
-        viewModel.updateName(name)
+            // When
+            viewModel.updateName(name)
 
-        // Then
-        assertEquals(name, viewModel.uiState.value.name)
-        assertEquals(true, viewModel.validationState.value.isNameValid)
-        assertEquals(false, viewModel.uiState.value.isLoading)
-    }
-
-    @Test
-    fun `should update expiration date in uiState`() = runTest {
-        // Given
-        val date = "2024-12-31"
-
-        // When
-        viewModel.updateExpirationDate(date)
-
-        // Then
-        assertEquals(date, viewModel.uiState.value.expirationDate)
-        assertEquals(true, viewModel.validationState.value.isExpirationDateValid)
-        assertEquals(false, viewModel.uiState.value.isLoading)
-    }
+            // Then
+            assertEquals(name, viewModel.uiState.value.name)
+            assertEquals(true, viewModel.validationState.value.isNameValid)
+            assertEquals(false, viewModel.uiState.value.isLoading)
+        }
 
     @Test
-    fun `should update comment in uiState`() = runTest {
-        // Given
-        val comment = "Take with food."
+    fun `should update expiration date in uiState`() =
+        runTest {
+            // Given
+            val date = "2024-12-31"
 
-        // When
-        viewModel.updateComment(comment)
+            // When
+            viewModel.updateExpirationDate(date)
 
-        // Then
-        assertEquals(comment, viewModel.uiState.value.comment)
-        assertEquals(false, viewModel.uiState.value.isLoading)
-    }
-
-    @Test
-    fun `should update captured image in uiState`() = runTest {
-        // Given
-        val image = mock(Bitmap::class.java)
-
-        // When
-        viewModel.uploadPhoto(image)
-
-        // Then
-        assertEquals(image, viewModel.uiState.value.capturedImage)
-    }
+            // Then
+            assertEquals(date, viewModel.uiState.value.expirationDate)
+            assertEquals(true, viewModel.validationState.value.isExpirationDateValid)
+            assertEquals(false, viewModel.uiState.value.isLoading)
+        }
 
     @Test
-    fun `should create medicine when input is valid`() = runTest {
-        // Given
-        val name = "Aspirin"
-        val date = "2024-12-31"
-        val comment = "Take with water."
-        val image = mock(Bitmap::class.java)
+    fun `should update comment in uiState`() =
+        runTest {
+            // Given
+            val comment = "Take with food."
 
-        viewModel.updateName(name)
-        viewModel.updateExpirationDate(date)
-        viewModel.updateComment(comment)
-        viewModel.uploadPhoto(image)
+            // When
+            viewModel.updateComment(comment)
 
-        // When
-        viewModel.create()
-        advanceUntilIdle()
-
-        // Then
-        assertEquals(false, viewModel.uiState.value.isLoading)
-        assertEquals(true, viewModel.validationState.value.isNameValid)
-        assertEquals(true, viewModel.validationState.value.isExpirationDateValid)
-        assertEquals(true, viewModel.uiState.value.created)
-
-        verify(medicineRepository, times(1)).create(
-            Medicine(
-                name = name,
-                expirationDate = date,
-                comment = comment,
-                image = image.toString(),
-            ),
-        )
-    }
+            // Then
+            assertEquals(comment, viewModel.uiState.value.comment)
+            assertEquals(false, viewModel.uiState.value.isLoading)
+        }
 
     @Test
-    fun `should not create medicine when input is invalid`() = runTest {
-        // Given
-        viewModel.updateName("")
-        viewModel.updateExpirationDate("")
+    fun `should update captured image in uiState`() =
+        runTest {
+            // Given
+            val image = mock(Bitmap::class.java)
 
-        // When
-        viewModel.create()
-        advanceUntilIdle()
+            // When
+            viewModel.uploadPhoto(image)
 
-        // Then
-        assertEquals(false, viewModel.uiState.value.isLoading)
-        assertEquals(false, viewModel.validationState.value.isNameValid)
-        assertEquals(false, viewModel.validationState.value.isExpirationDateValid)
-        assertEquals(false, viewModel.uiState.value.created)
-
-        verify(medicineRepository, never()).create(any())
-    }
+            // Then
+            assertEquals(image, viewModel.uiState.value.capturedImage)
+        }
 
     @Test
-    fun `should reset created state`() = runTest {
-        // When
-        viewModel.consumeCreatedAction()
+    fun `should create medicine when input is valid`() =
+        runTest {
+            // Given
+            val name = "Aspirin"
+            val date = "2024-12-31"
+            val comment = "Take with water."
+            val image = mock(Bitmap::class.java)
 
-        // Then
-        assertEquals(false, viewModel.uiState.value.created)
-    }
+            viewModel.updateName(name)
+            viewModel.updateExpirationDate(date)
+            viewModel.updateComment(comment)
+            viewModel.uploadPhoto(image)
+
+            // When
+            viewModel.create()
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(false, viewModel.uiState.value.isLoading)
+            assertEquals(true, viewModel.validationState.value.isNameValid)
+            assertEquals(true, viewModel.validationState.value.isExpirationDateValid)
+            assertEquals(true, viewModel.uiState.value.created)
+
+            verify(medicineRepository, times(1)).create(
+                Medicine(
+                    name = name,
+                    expirationDate = date,
+                    comment = comment,
+                    image = image.toString(),
+                ),
+            )
+        }
+
+    @Test
+    fun `should not create medicine when input is invalid`() =
+        runTest {
+            // Given
+            viewModel.updateName("")
+            viewModel.updateExpirationDate("")
+
+            // When
+            viewModel.create()
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(false, viewModel.uiState.value.isLoading)
+            assertEquals(false, viewModel.validationState.value.isNameValid)
+            assertEquals(false, viewModel.validationState.value.isExpirationDateValid)
+            assertEquals(false, viewModel.uiState.value.created)
+
+            verify(medicineRepository, never()).create(any())
+        }
+
+    @Test
+    fun `should reset created state`() =
+        runTest {
+            // When
+            viewModel.consumeCreatedAction()
+
+            // Then
+            assertEquals(false, viewModel.uiState.value.created)
+        }
 }

@@ -45,11 +45,12 @@ class MedicineListViewModelTest {
     }
 
     @Test
-    fun `should get all items from repository`() = runTest {
-        // When
-        advanceUntilIdle()
+    fun `should get all items from repository`() =
+        runTest {
+            // When
+            advanceUntilIdle()
 
-        // Then
-        assertEquals(viewModel.uiState.value.medicines, medicines)
-    }
+            // Then
+            assertEquals(viewModel.uiState.value.medicines, medicines)
+        }
 }
