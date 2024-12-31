@@ -38,18 +38,19 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.R
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
+import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationValidationState
 import com.example.pillwise.navigation.routes.ListRoute
 
 @Composable
-fun CreationScreen(
+fun MedicineCreationScreen(
     navController: NavController,
     viewModel: MedicineCreationViewModel = hiltViewModel<MedicineCreationViewModel>(),
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val validationState = viewModel.validationState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(uiState.created) {
         if (uiState.created) {
@@ -58,6 +59,28 @@ fun CreationScreen(
         }
     }
 
+    MedicineCreationScreen(
+        uiState,
+        validationState,
+        uploadPhoto = { photo -> viewModel.uploadPhoto(photo) },
+        updateExpirationDate = { date -> viewModel.updateExpirationDate(date) },
+        updateName = { name -> viewModel.updateName(name) },
+        updateComment = { comment -> viewModel.updateComment(comment) },
+        create = { -> viewModel.create() },
+    )
+}
+
+@Composable
+fun MedicineCreationScreen(
+    uiState: MedicineCreationUiState,
+    validationState: MedicineCreationValidationState,
+    uploadPhoto: (Bitmap) -> Unit,
+    updateExpirationDate: (String) -> Unit,
+    updateName: (String) -> Unit,
+    updateComment: (String) -> Unit,
+    create: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier =
             modifier
@@ -65,20 +88,22 @@ fun CreationScreen(
                 .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
-        CreationForm(
+        MedicineCreationForm(
             uiState,
-            uploadPhoto = { photo -> viewModel.uploadPhoto(photo) },
-            updateExpirationDate = { date -> viewModel.updateExpirationDate(date) },
-            updateName = { name -> viewModel.updateName(name) },
-            updateComment = { comment -> viewModel.updateComment(comment) },
-            create = { -> viewModel.create() },
+            validationState,
+            uploadPhoto = { photo -> uploadPhoto(photo) },
+            updateExpirationDate = { date -> updateExpirationDate(date) },
+            updateName = { name -> updateName(name) },
+            updateComment = { comment -> updateComment(comment) },
+            create = { -> create() },
         )
     }
 }
 
 @Composable
-fun CreationForm(
+fun MedicineCreationForm(
     uiState: MedicineCreationUiState,
+    validationState: MedicineCreationValidationState,
     uploadPhoto: (Bitmap) -> Unit,
     updateExpirationDate: (String) -> Unit,
     updateName: (String) -> Unit,
@@ -116,9 +141,9 @@ fun CreationForm(
             onValueChange = { updateName(it) },
             label = { Text(stringResource(R.string.medicine_name_text_field)) },
             modifier = Modifier.fillMaxWidth(),
-            isError = !uiState.isNameValid,
+            isError = !validationState.isNameValid,
         )
-        if (!uiState.isNameValid) {
+        if (!validationState.isNameValid) {
             Text(
                 text = stringResource(R.string.medicine_name_validation_message),
             )
@@ -153,7 +178,7 @@ fun CreationForm(
             readOnly = true,
             label = { Text(stringResource(R.string.expiration_date_text_field)) },
             modifier = Modifier.fillMaxWidth(),
-            isError = !uiState.isExpirationDateValid,
+            isError = !validationState.isExpirationDateValid,
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
@@ -163,7 +188,7 @@ fun CreationForm(
                 }
             },
         )
-        if (!uiState.isExpirationDateValid) {
+        if (!validationState.isExpirationDateValid) {
             Text(
                 text = stringResource(R.string.expiration_date_validation_message),
             )
@@ -198,8 +223,14 @@ fun CreationForm(
 
 @Preview
 @Composable
-private fun CreationScreenPreview() {
-    CreationScreen(
-        navController = rememberNavController(),
+private fun MedicineCreationScreenPreview() {
+    MedicineCreationScreen(
+        uiState = MedicineCreationUiState(),
+        validationState = MedicineCreationValidationState(),
+        uploadPhoto = {},
+        updateExpirationDate = {},
+        updateName = {},
+        updateComment = {},
+        create = {},
     )
 }

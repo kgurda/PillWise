@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pillwise.data.local.entities.Medicine
 import com.example.pillwise.feature.medicine.creation.presentation.data.MedicineCreationRepository
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
+import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationValidationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,56 +23,42 @@ class MedicineCreationViewModel
         private val medicineRepository: MedicineCreationRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(MedicineCreationUiState())
+        private val _validationState = MutableStateFlow(MedicineCreationValidationState())
+
         val uiState: StateFlow<MedicineCreationUiState> = _uiState.asStateFlow()
+        val validationState: StateFlow<MedicineCreationValidationState> = _validationState.asStateFlow()
 
         fun updateName(name: String) {
-            _uiState.value =
-                _uiState.value.copy(
-                    name = name,
-                    isNameValid = true,
-                    isLoading = false,
-                )
+            _uiState.update { it.copy(name = name, isLoading = false) }
+            _validationState.update { it.copy(isNameValid = name.isNotEmpty()) }
         }
 
         fun updateExpirationDate(date: String) {
-            _uiState.value =
-                _uiState.value.copy(
-                    expirationDate = date,
-                    isExpirationDateValid = true,
-                    isLoading = false,
-                )
+            _uiState.update { it.copy(expirationDate = date, isLoading = false) }
+            _validationState.update { it.copy(isExpirationDateValid = date.isNotEmpty()) }
         }
 
         fun updateComment(comment: String) {
-            _uiState.value =
-                _uiState.value.copy(
-                    comment = comment,
-                    isLoading = false,
-                )
+            _uiState.update { it.copy(comment = comment, isLoading = false) }
         }
 
         fun uploadPhoto(image: Bitmap) {
-            _uiState.value = _uiState.value.copy(capturedImage = image)
+            _uiState.update { it.copy(capturedImage = image) }
         }
 
         fun create() =
             viewModelScope.launch {
-                val currentState =
-                    _uiState.updateAndGet {
-                        it.copy(
-                            isLoading = true,
-                        )
-                    }
+                val currentState = _uiState.updateAndGet { it.copy(isLoading = true) }
+
                 val isNameValid = currentState.name.isNotEmpty()
                 val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
 
-                _uiState.value =
-                    currentState.copy(
+                _validationState.update {
+                    it.copy(
                         isNameValid = isNameValid,
                         isExpirationDateValid = isExpirationDateValid,
-                        isLoading = false,
-                        created = isNameValid && isExpirationDateValid,
                     )
+                }
 
                 if (isNameValid && isExpirationDateValid) {
                     medicineRepository.create(
@@ -84,14 +71,12 @@ class MedicineCreationViewModel
                         ),
                     )
                 }
+
+                _uiState.update { it.copy(isLoading = false, created = isNameValid && isExpirationDateValid) }
             }
 
         fun consumeCreatedAction() =
             viewModelScope.launch {
-                _uiState.update {
-                    it.copy(
-                        created = false,
-                    )
-                }
+                _uiState.update { it.copy(created = false) }
             }
     }

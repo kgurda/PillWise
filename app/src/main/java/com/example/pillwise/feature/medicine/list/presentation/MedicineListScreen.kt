@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.R
 import com.example.pillwise.data.local.entities.Medicine
+import com.example.pillwise.feature.medicine.list.presentation.model.MedicineListUiState
 
 @Composable
 fun MedicineListScreen(
@@ -35,6 +35,17 @@ fun MedicineListScreen(
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
+    MedicineListScreen(
+        uiState = uiState,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MedicineListScreen(
+    uiState: MedicineListUiState,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier =
             modifier
@@ -96,6 +107,6 @@ fun MedicineItem(medicine: Medicine) {
 @Composable
 private fun MedicineListScreenPreview() {
     MedicineListScreen(
-        navController = rememberNavController(),
+        uiState = MedicineListUiState()
     )
 }

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.R
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
 import com.example.pillwise.navigation.routes.ListRoute
@@ -62,7 +61,7 @@ private fun LoginScreen(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -119,6 +118,9 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        navController = rememberNavController(),
+        uiState = LoginUiState(),
+        onUsernameChange = {},
+        onPasswordChange = {},
+        onLoginClick = {},
     )
 }
