@@ -1,6 +1,7 @@
 package com.example.pillwise.feature.medicine.presentation.model
 
 import android.graphics.Bitmap
+import com.example.pillwise.data.local.entities.Medicine
 
 data class CreationUiState(
     var name: String = "",
@@ -8,8 +9,8 @@ data class CreationUiState(
     var expirationDate: String = "",
     var isExpirationDateValid: Boolean = true,
     var comment: String = "",
-    var photoUri: String? = null,
     var isLoading: Boolean = false,
     var capturedImage: Bitmap? = null,
     var created: Boolean = false,
+    var medicines: List<Medicine> = emptyList<Medicine>(),
 )

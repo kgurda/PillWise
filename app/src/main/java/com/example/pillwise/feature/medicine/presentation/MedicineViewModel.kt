@@ -10,7 +10,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +25,14 @@ class MedicineViewModel
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(CreationUiState())
         val uiState: StateFlow<CreationUiState> = _uiState.asStateFlow()
+
+        init {
+            medicineRepository.getAll()
+                .onEach { medicines ->
+                    _uiState.update { it.copy(medicines = medicines) }
+                }
+                .launchIn(viewModelScope)
+        }
 
         fun updateName(name: String) {
             _uiState.value =
@@ -57,13 +68,11 @@ class MedicineViewModel
 
         fun create() =
             viewModelScope.launch {
-                _uiState.update {
+                val currentState = _uiState.updateAndGet {
                     it.copy(
                         isLoading = true,
                     )
                 }
-
-                val currentState = _uiState.value
                 val isNameValid = currentState.name.isNotEmpty()
                 val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
 

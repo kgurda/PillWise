@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.pillwise.data.local.entities.Medicine
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicineDao {
@@ -12,7 +13,7 @@ interface MedicineDao {
     suspend fun insert(medicine: Medicine)
 
     @Query("SELECT * FROM medicines")
-    fun getAll(): List<Medicine>
+    fun getAll(): Flow<List<Medicine>>
 
     @Query("DELETE FROM medicines")
     suspend fun clear()

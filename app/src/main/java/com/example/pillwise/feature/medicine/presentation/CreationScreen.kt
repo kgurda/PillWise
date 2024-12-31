@@ -1,6 +1,5 @@
 package com.example.pillwise.feature.medicine.presentation
 
-import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,21 +32,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pillwise.R
 import com.example.pillwise.feature.medicine.presentation.model.CreationUiState
 import com.example.pillwise.navigation.routes.ListRoute
-import java.util.Calendar
 
 @Composable
 fun CreationScreen(
     navController: NavController,
-    viewModel: MedicineViewModel = viewModel(),
+    viewModel: MedicineViewModel = hiltViewModel<MedicineViewModel>(),
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -95,15 +94,14 @@ fun CreationForm(
             }
         }
 
-    if (showDatePicker) {
-        DatePicker(
-            onDateSelected = { selectedDate ->
-                updateExpirationDate(selectedDate)
-                showDatePicker = false
-            },
-            onDismiss = { showDatePicker = false },
-        )
-    }
+    DatePicker(
+        onDateSelected = { selectedDate ->
+            updateExpirationDate(selectedDate)
+            showDatePicker = false
+        },
+        shouldShowDataPicker = showDatePicker,
+        onDismiss = { showDatePicker = false },
+    )
 
     Column(
         modifier =
@@ -116,13 +114,13 @@ fun CreationForm(
         TextField(
             value = uiState.name,
             onValueChange = { updateName(it) },
-            label = { Text("Medicine Name") },
+            label = { Text(stringResource(R.string.medicine_name_text_field)) },
             modifier = Modifier.fillMaxWidth(),
             isError = !uiState.isNameValid,
         )
         if (!uiState.isNameValid) {
             Text(
-                text = "Name cannot be empty",
+                text = stringResource(R.string.medicine_name_validation_message),
             )
         }
 
@@ -131,7 +129,7 @@ fun CreationForm(
         uiState.capturedImage?.let { bitmap ->
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Captured Image",
+                contentDescription = stringResource(R.string.image_field),
                 modifier =
                     Modifier
                         .size(200.dp)
@@ -144,7 +142,7 @@ fun CreationForm(
             onClick = { cameraLauncher.launch(null) },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Take Photo")
+            Text(stringResource(R.string.image_button))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -153,21 +151,21 @@ fun CreationForm(
             value = uiState.expirationDate,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Expiration Date") },
+            label = { Text(stringResource(R.string.expiration_date_text_field)) },
             modifier = Modifier.fillMaxWidth(),
             isError = !uiState.isExpirationDateValid,
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date",
+                        contentDescription = stringResource(R.string.expiration_date_button),
                     )
                 }
             },
         )
         if (!uiState.isExpirationDateValid) {
             Text(
-                text = "Expiration Date cannot be empty",
+                text = stringResource(R.string.expiration_date_validation_message),
             )
         }
 
@@ -177,7 +175,7 @@ fun CreationForm(
         TextField(
             value = uiState.comment,
             onValueChange = { updateComment(it) },
-            label = { Text("Comment") },
+            label = { Text(stringResource(R.string.comment_text_field)) },
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -189,38 +187,12 @@ fun CreationForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = (uiState.name.isNotEmpty() && uiState.expirationDate.isNotEmpty()) || uiState.isLoading == true,
         ) {
-            Text("Create")
+            Text(stringResource(R.string.create_button))
         }
 
         if (uiState.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
-    }
-}
-
-@Composable
-fun DatePicker(
-    onDateSelected: (String) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val context = LocalContext.current
-
-    DatePickerDialog(
-        context,
-        { _, selectedYear, selectedMonth, selectedDay ->
-            val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-            onDateSelected(selectedDate)
-        },
-        year,
-        month,
-        day,
-    ).apply {
-        setOnDismissListener { onDismiss() }
-        show()
     }
 }
 

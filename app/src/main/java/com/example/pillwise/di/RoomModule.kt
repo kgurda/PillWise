@@ -12,7 +12,11 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RoomModule {
+class RoomModule {
+    companion object {
+        const val DATABASE_NAME = "pill_wise_database"
+    }
+
     @Provides
     fun providePillWiseDatabase(
         @ApplicationContext context: Context,
@@ -20,8 +24,9 @@ object RoomModule {
         return Room.databaseBuilder(
             context,
             PillWiseDatabase::class.java,
-            "pill_wise_database",
-        ).allowMainThreadQueries().build()
+            DATABASE_NAME,
+        )
+            .build()
     }
 
     @Provides

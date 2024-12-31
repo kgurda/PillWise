@@ -13,32 +13,27 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.pillwise.R
 import com.example.pillwise.data.local.entities.Medicine
 
 @Composable
-fun ListScreen(
+fun MedicineListScreen(
     navController: NavController,
-    viewModel: MedicineViewModel = viewModel(),
+    viewModel: MedicineViewModel = hiltViewModel<MedicineViewModel>(),
     modifier: Modifier = Modifier,
 ) {
-    val medicines = remember { mutableStateListOf<Medicine>() }
-
-    LaunchedEffect(Unit) {
-        val medicineList = viewModel.getAll()
-        medicines.addAll(medicineList)
-    }
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     Column(
         modifier =
@@ -47,7 +42,7 @@ fun ListScreen(
                 .padding(16.dp),
     ) {
         Text(
-            text = "Medicine List",
+            text = stringResource(R.string.medicine_list_page_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp),
@@ -61,23 +56,23 @@ fun ListScreen(
                     .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text("Name", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text("Expiration Date", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text("Comment", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.medicine_name_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.medicine_expiration_date_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.medicine_comment_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
         }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
         ) {
-            items(medicines) { medicine ->
-                MedicineRow(medicine = medicine)
+            items(uiState.medicines) { medicine ->
+                MedicineItem(medicine = medicine)
             }
         }
     }
 }
 
 @Composable
-fun MedicineRow(medicine: Medicine) {
+fun MedicineItem(medicine: Medicine) {
     Row(
         modifier =
             Modifier
@@ -89,14 +84,14 @@ fun MedicineRow(medicine: Medicine) {
     ) {
         Text(medicine.name, modifier = Modifier.weight(1f))
         Text(medicine.expirationDate, modifier = Modifier.weight(1f))
-        Text(medicine.comment ?: "", modifier = Modifier.weight(1f))
+        Text(medicine.comment ?: stringResource(R.string.medicine_comment_placeholder), modifier = Modifier.weight(1f))
     }
 }
 
 @Preview
 @Composable
-private fun ListScreenPreview() {
-    ListScreen(
+private fun MedicineListScreenPreview() {
+    MedicineListScreen(
         navController = rememberNavController(),
     )
 }
