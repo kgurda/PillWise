@@ -16,8 +16,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.feature.home.presentation.HomeScreen
 import com.example.pillwise.feature.login.presentation.LoginScreen
-import com.example.pillwise.feature.medicine.presentation.CreationScreen
-import com.example.pillwise.feature.medicine.presentation.MedicineListScreen
+import com.example.pillwise.feature.medicine.creation.presentation.CreationScreen
+import com.example.pillwise.feature.medicine.list.presentation.MedicineListScreen
 import com.example.pillwise.navigation.BottomNavigationBar
 import com.example.pillwise.navigation.routes.CreationRoute
 import com.example.pillwise.navigation.routes.HomeRoute

@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.medicine.presentation
+package com.example.pillwise.feature.medicine.list.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +30,7 @@ import com.example.pillwise.data.local.entities.Medicine
 @Composable
 fun MedicineListScreen(
     navController: NavController,
-    viewModel: MedicineViewModel = hiltViewModel<MedicineViewModel>(),
+    viewModel: MedicineListViewModel = hiltViewModel<MedicineListViewModel>(),
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -57,7 +57,11 @@ fun MedicineListScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(stringResource(R.string.medicine_name_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text(stringResource(R.string.medicine_expiration_date_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(
+                stringResource(R.string.medicine_expiration_date_column_title),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+            )
             Text(stringResource(R.string.medicine_comment_column_title), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
         }
 

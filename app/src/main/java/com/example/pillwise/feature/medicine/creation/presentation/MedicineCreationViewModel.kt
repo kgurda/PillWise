@@ -1,38 +1,28 @@
-package com.example.pillwise.feature.medicine.presentation
+package com.example.pillwise.feature.medicine.creation.presentation
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pillwise.data.local.entities.Medicine
-import com.example.pillwise.feature.medicine.presentation.data.MedicineRepository
-import com.example.pillwise.feature.medicine.presentation.model.CreationUiState
+import com.example.pillwise.feature.medicine.creation.presentation.data.MedicineCreationRepository
+import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MedicineViewModel
+class MedicineCreationViewModel
     @Inject
     constructor(
-        private val medicineRepository: MedicineRepository,
+        private val medicineRepository: MedicineCreationRepository,
     ) : ViewModel() {
-        private val _uiState = MutableStateFlow(CreationUiState())
-        val uiState: StateFlow<CreationUiState> = _uiState.asStateFlow()
-
-        init {
-            medicineRepository.getAll()
-                .onEach { medicines ->
-                    _uiState.update { it.copy(medicines = medicines) }
-                }
-                .launchIn(viewModelScope)
-        }
+        private val _uiState = MutableStateFlow(MedicineCreationUiState())
+        val uiState: StateFlow<MedicineCreationUiState> = _uiState.asStateFlow()
 
         fun updateName(name: String) {
             _uiState.value =
@@ -64,15 +54,14 @@ class MedicineViewModel
             _uiState.value = _uiState.value.copy(capturedImage = image)
         }
 
-        fun getAll() = medicineRepository.getAll()
-
         fun create() =
             viewModelScope.launch {
-                val currentState = _uiState.updateAndGet {
-                    it.copy(
-                        isLoading = true,
-                    )
-                }
+                val currentState =
+                    _uiState.updateAndGet {
+                        it.copy(
+                            isLoading = true,
+                        )
+                    }
                 val isNameValid = currentState.name.isNotEmpty()
                 val isExpirationDateValid = currentState.expirationDate.isNotEmpty()
 

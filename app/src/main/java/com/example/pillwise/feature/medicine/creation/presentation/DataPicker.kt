@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.medicine.presentation
+package com.example.pillwise.feature.medicine.creation.presentation
 
 import android.app.DatePickerDialog
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.example.pillwise.feature.medicine.presentation
+package com.example.pillwise.feature.medicine.creation.presentation
 
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,13 +40,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.R
-import com.example.pillwise.feature.medicine.presentation.model.CreationUiState
+import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
 import com.example.pillwise.navigation.routes.ListRoute
 
 @Composable
 fun CreationScreen(
     navController: NavController,
-    viewModel: MedicineViewModel = hiltViewModel<MedicineViewModel>(),
+    viewModel: MedicineCreationViewModel = hiltViewModel<MedicineCreationViewModel>(),
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -78,7 +78,7 @@ fun CreationScreen(
 
 @Composable
 fun CreationForm(
-    uiState: CreationUiState,
+    uiState: MedicineCreationUiState,
     uploadPhoto: (Bitmap) -> Unit,
     updateExpirationDate: (String) -> Unit,
     updateName: (String) -> Unit,

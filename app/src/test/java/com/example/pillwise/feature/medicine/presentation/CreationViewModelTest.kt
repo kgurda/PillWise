@@ -1,7 +1,7 @@
 import android.graphics.Bitmap
 import com.example.pillwise.data.local.entities.Medicine
-import com.example.pillwise.feature.medicine.presentation.MedicineViewModel
-import com.example.pillwise.feature.medicine.presentation.data.MedicineRepository
+import com.example.pillwise.feature.medicine.creation.presentation.MedicineCreationViewModel
+import com.example.pillwise.feature.medicine.creation.presentation.data.MedicineRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -22,13 +22,13 @@ import org.mockito.kotlin.verify
 @OptIn(ExperimentalCoroutinesApi::class)
 class CreationViewModelTest {
     private lateinit var medicineRepository: MedicineRepository
-    private lateinit var viewModel: MedicineViewModel
+    private lateinit var viewModel: MedicineCreationViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
         medicineRepository = mock()
-        viewModel = MedicineViewModel(medicineRepository)
+        viewModel = MedicineCreationViewModel(medicineRepository)
     }
 
     @After
