@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LoginViewModel
     @Inject
     constructor(
-        private val loginUseCase: LoginUseCase,
+        private val loginUseCase: LoginUseCase
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(LoginUiState())
         val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()

@@ -47,7 +47,7 @@ import com.example.pillwise.navigation.routes.ListRoute
 fun MedicineCreationScreen(
     navController: NavController,
     viewModel: MedicineCreationViewModel = hiltViewModel<MedicineCreationViewModel>(),
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val validationState = viewModel.validationState.collectAsStateWithLifecycle().value
@@ -79,7 +79,7 @@ fun MedicineCreationScreen(
     updateName: (String) -> Unit,
     updateComment: (String) -> Unit,
     create: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier =
@@ -108,7 +108,7 @@ fun MedicineCreationForm(
     updateExpirationDate: (String) -> Unit,
     updateName: (String) -> Unit,
     updateComment: (String) -> Unit,
-    create: () -> Unit,
+    create: () -> Unit
 ) {
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
 

@@ -19,7 +19,7 @@ class RoomModule {
 
     @Provides
     fun providePillWiseDatabase(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): PillWiseDatabase {
         return Room.databaseBuilder(
             context,

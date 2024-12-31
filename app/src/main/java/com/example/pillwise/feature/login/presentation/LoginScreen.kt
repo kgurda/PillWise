@@ -30,7 +30,7 @@ import com.example.pillwise.navigation.routes.ListRoute
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
+    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -57,7 +57,7 @@ private fun LoginScreen(
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,

@@ -15,7 +15,7 @@ import java.util.Calendar
 fun DatePicker(
     onDateSelected: (String) -> Unit,
     shouldShowDataPicker: Boolean = false,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     // TODO remove onDismiss and showDatePicker
     val calendar = Calendar.getInstance()

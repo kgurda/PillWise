@@ -11,7 +11,7 @@ interface MedicineCreationRepository {
 internal class MedicineCreationRepositoryImpl
     @Inject
     constructor(
-        private val medicineDao: MedicineDao,
+        private val medicineDao: MedicineDao
     ) : MedicineCreationRepository {
         override suspend fun create(medicine: Medicine) {
             medicineDao.insert(medicine)

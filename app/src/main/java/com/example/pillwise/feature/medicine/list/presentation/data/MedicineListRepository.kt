@@ -12,7 +12,7 @@ interface MedicineListRepository {
 internal class MedicineListRepositoryImpl
     @Inject
     constructor(
-        private val medicineDao: MedicineDao,
+        private val medicineDao: MedicineDao
     ) : MedicineListRepository {
         override fun getAll() = medicineDao.getAll()
     }

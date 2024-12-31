@@ -46,7 +46,7 @@ fun MedicineListScreen(
     MedicineListScreen(
         uiState = uiState,
         onAddButtonClick = { navController.navigate(CreationRoute) },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -54,15 +54,16 @@ fun MedicineListScreen(
 fun MedicineListScreen(
     uiState: MedicineListUiState,
     onAddButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
         ) {
             Text(
                 text = stringResource(R.string.medicine_list_page_title),
@@ -73,10 +74,10 @@ fun MedicineListScreen(
 
             Row(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray)
-                    .padding(8.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
@@ -92,7 +93,7 @@ fun MedicineListScreen(
                 Text(
                     stringResource(R.string.medicine_comment_column_title),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
             }
 
@@ -107,9 +108,10 @@ fun MedicineListScreen(
         FloatingActionButton(
             onClick = { onAddButtonClick() },
             shape = CircleShape,
-            modifier = modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
+            modifier =
+                modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
         ) {
             Icon(Icons.Filled.Add, stringResource(R.string.create_medicine_button))
         }
@@ -120,12 +122,12 @@ fun MedicineListScreen(
 fun MedicineItem(medicine: Medicine) {
     Row(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .border(1.dp, Color.Gray, shape = RoundedCornerShape(4.dp))
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
+                .border(1.dp, Color.Gray, shape = RoundedCornerShape(4.dp))
+                .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(medicine.name, modifier = Modifier.weight(1f))
         Text(medicine.expirationDate, modifier = Modifier.weight(1f))
@@ -138,6 +140,6 @@ fun MedicineItem(medicine: Medicine) {
 private fun MedicineListScreenPreview() {
     MedicineListScreen(
         uiState = MedicineListUiState(),
-        onAddButtonClick = {}
+        onAddButtonClick = {},
     )
 }

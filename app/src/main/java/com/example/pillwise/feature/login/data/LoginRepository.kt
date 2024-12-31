@@ -5,7 +5,7 @@ import javax.inject.Inject
 interface LoginRepository {
     fun login(
         username: String,
-        password: String,
+        password: String
     ): Result<Unit>
 }
 
@@ -14,7 +14,7 @@ internal class LoginRepositoryImpl
     constructor() : LoginRepository {
         override fun login(
             username: String,
-            password: String,
+            password: String
         ): Result<Unit> {
             val map =
                 mapOf<String, String>(

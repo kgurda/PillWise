@@ -8,10 +8,10 @@ data class MedicineCreationUiState(
     var comment: String = "",
     var isLoading: Boolean = false,
     var capturedImage: Bitmap? = null,
-    var created: Boolean = false,
+    var created: Boolean = false
 )
 
 data class MedicineCreationValidationState(
     var isNameValid: Boolean = true,
-    var isExpirationDateValid: Boolean = true,
+    var isExpirationDateValid: Boolean = true
 )

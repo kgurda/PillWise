@@ -25,7 +25,7 @@ import com.example.pillwise.navigation.routes.LoginRoute
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    currentDestination: NavDestination?,
+    currentDestination: NavDestination?
 ) {
     val configuration = LocalConfiguration.current
     val isMobile = configuration.screenWidthDp < 600
@@ -34,7 +34,7 @@ fun BottomNavigationBar(
         listOf(
             PillWiseTopLevelRoute(R.string.home, Icons.Default.Home, HomeRoute),
             PillWiseTopLevelRoute(R.string.login, Icons.Default.Lock, LoginRoute),
-            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute)
+            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute),
         )
 
     NavigationBar {

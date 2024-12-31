@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MedicineCreationViewModel
     @Inject
     constructor(
-        private val medicineRepository: MedicineCreationRepository,
+        private val medicineRepository: MedicineCreationRepository
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(MedicineCreationUiState())
         private val _validationState = MutableStateFlow(MedicineCreationValidationState())

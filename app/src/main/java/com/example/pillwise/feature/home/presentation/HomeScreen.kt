@@ -17,7 +17,7 @@ import com.example.pillwise.navigation.routes.LoginRoute
 @Composable
 fun HomeScreen(
     navController: NavController,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier =
