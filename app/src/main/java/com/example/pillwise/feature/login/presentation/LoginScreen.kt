@@ -25,7 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.pillwise.R
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
-import com.example.pillwise.navigation.routes.ListRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
 
 @Composable
 fun LoginScreen(
@@ -36,7 +36,7 @@ fun LoginScreen(
 
     LaunchedEffect(uiState.loggedIn) {
         if (uiState.loggedIn) {
-            navController.navigate(ListRoute)
+            navController.navigate(MedicineListRoute)
             viewModel.consumeLoginAction()
         }
     }

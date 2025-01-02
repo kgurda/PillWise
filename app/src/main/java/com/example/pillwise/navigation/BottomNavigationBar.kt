@@ -18,8 +18,8 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.pillwise.R
 import com.example.pillwise.navigation.routes.HomeRoute
-import com.example.pillwise.navigation.routes.ListRoute
 import com.example.pillwise.navigation.routes.LoginRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +34,7 @@ fun BottomNavigationBar(
         listOf(
             PillWiseTopLevelRoute(R.string.home, Icons.Default.Home, HomeRoute),
             PillWiseTopLevelRoute(R.string.login, Icons.Default.Lock, LoginRoute),
-            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute)
+            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, MedicineListRoute)
         )
 
     NavigationBar {

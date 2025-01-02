@@ -14,20 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +33,7 @@ import androidx.navigation.NavController
 import com.example.pillwise.R
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationValidationState
-import com.example.pillwise.navigation.routes.ListRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
 
 @Composable
 fun MedicineCreationScreen(
@@ -54,7 +46,7 @@ fun MedicineCreationScreen(
 
     LaunchedEffect(uiState.created) {
         if (uiState.created) {
-            navController.navigate(ListRoute)
+            navController.navigate(MedicineListRoute)
             viewModel.consumeCreatedAction()
         }
     }
@@ -110,23 +102,12 @@ fun MedicineCreationForm(
     updateComment: (String) -> Unit,
     create: () -> Unit
 ) {
-    var showDatePicker by rememberSaveable { mutableStateOf(false) }
-
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
                 uploadPhoto(bitmap)
             }
         }
-
-    DatePicker(
-        onDateSelected = { selectedDate ->
-            updateExpirationDate(selectedDate)
-            showDatePicker = false
-        },
-        shouldShowDataPicker = showDatePicker,
-        onDismiss = { showDatePicker = false }
-    )
 
     Column(
         modifier =
@@ -180,12 +161,11 @@ fun MedicineCreationForm(
             modifier = Modifier.fillMaxWidth(),
             isError = !validationState.isExpirationDateValid,
             trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = stringResource(R.string.expiration_date_button)
-                    )
-                }
+                DatePicker(
+                    onDateSelected = { selectedDate ->
+                        updateExpirationDate(selectedDate)
+                    }
+                )
             }
         )
         if (!validationState.isExpirationDateValid) {
@@ -196,7 +176,6 @@ fun MedicineCreationForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Comment Field
         TextField(
             value = uiState.comment,
             onValueChange = { updateComment(it) },
@@ -206,7 +185,6 @@ fun MedicineCreationForm(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Create Button with Validation
         Button(
             onClick = { create() },
             modifier = Modifier.fillMaxWidth(),

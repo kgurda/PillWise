@@ -1,23 +1,23 @@
 package com.example.pillwise.feature.medicine.creation.presentation
 
 import android.app.DatePickerDialog
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.pillwise.R
 import java.util.Calendar
 
 @Composable
-fun DatePicker(
-    onDateSelected: (String) -> Unit,
-    shouldShowDataPicker: Boolean = false,
-    onDismiss: () -> Unit
-) {
-    // TODO remove onDismiss and showDatePicker
+fun DatePicker(onDateSelected: (String) -> Unit) {
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
@@ -25,10 +25,6 @@ fun DatePicker(
     val context = LocalContext.current
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
-
-    LaunchedEffect(shouldShowDataPicker) {
-        showDatePicker = shouldShowDataPicker
-    }
 
     if (showDatePicker) {
         DatePickerDialog(
@@ -43,11 +39,17 @@ fun DatePicker(
             day
         ).apply {
             setOnDismissListener {
-                onDismiss()
                 showDatePicker = false
             }
             show()
         }
+    }
+
+    IconButton(onClick = { showDatePicker = !showDatePicker }) {
+        Icon(
+            imageVector = Icons.Default.DateRange,
+            contentDescription = stringResource(R.string.expiration_date_button)
+        )
     }
 }
 
@@ -55,8 +57,6 @@ fun DatePicker(
 @Composable
 private fun DatePickerPreview() {
     DatePicker(
-        onDateSelected = {},
-        shouldShowDataPicker = true,
-        onDismiss = {}
+        onDateSelected = {}
     )
 }

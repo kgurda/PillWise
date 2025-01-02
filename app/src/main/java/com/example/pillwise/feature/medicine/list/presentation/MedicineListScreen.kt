@@ -33,7 +33,7 @@ import androidx.navigation.NavController
 import com.example.pillwise.R
 import com.example.pillwise.data.local.entities.Medicine
 import com.example.pillwise.feature.medicine.list.presentation.model.MedicineListUiState
-import com.example.pillwise.navigation.routes.CreationRoute
+import com.example.pillwise.navigation.routes.MedicineCreationRoute
 
 @Composable
 fun MedicineListScreen(
@@ -45,7 +45,7 @@ fun MedicineListScreen(
 
     MedicineListScreen(
         uiState = uiState,
-        onAddButtonClick = { navController.navigate(CreationRoute) },
+        onAddButtonClick = { navController.navigate(MedicineCreationRoute) },
         modifier = modifier
     )
 }

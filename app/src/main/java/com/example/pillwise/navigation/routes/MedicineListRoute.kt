@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object
-ListRoute
+MedicineListRoute

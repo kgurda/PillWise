@@ -19,10 +19,10 @@ import com.example.pillwise.feature.login.presentation.LoginScreen
 import com.example.pillwise.feature.medicine.creation.presentation.MedicineCreationScreen
 import com.example.pillwise.feature.medicine.list.presentation.MedicineListScreen
 import com.example.pillwise.navigation.BottomNavigationBar
-import com.example.pillwise.navigation.routes.CreationRoute
 import com.example.pillwise.navigation.routes.HomeRoute
-import com.example.pillwise.navigation.routes.ListRoute
 import com.example.pillwise.navigation.routes.LoginRoute
+import com.example.pillwise.navigation.routes.MedicineCreationRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
 import com.example.pillwise.ui.theme.PillWiseTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,13 +56,13 @@ class MainActivity : ComponentActivity() {
                             composable<HomeRoute> {
                                 HomeScreen(navController)
                             }
-                            composable<ListRoute> {
+                            composable<MedicineListRoute> {
                                 MedicineListScreen(navController)
                             }
                             composable<LoginRoute> {
                                 LoginScreen(navController)
                             }
-                            composable<CreationRoute> {
+                            composable<MedicineCreationRoute> {
                                 MedicineCreationScreen(navController)
                             }
                         }
