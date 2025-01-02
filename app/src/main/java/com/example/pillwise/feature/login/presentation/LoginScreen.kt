@@ -1,6 +1,5 @@
 package com.example.pillwise.feature.login.presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.example.pillwise.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,34 +20,34 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.pillwise.R
 import com.example.pillwise.feature.login.presentation.model.LoginUiState
-import com.example.pillwise.navigation.ListRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(uiState.loggedIn) {
         if (uiState.loggedIn) {
-            navController.navigate(ListRoute)
+            navController.navigate(MedicineListRoute)
             viewModel.consumeLoginAction()
         }
     }
 
     LoginScreen(
         uiState = uiState,
-        onUsernameChange = { username -> viewModel.setUsername(username)},
-        onPasswordChange = { password -> viewModel.setPassword(password)},
+        onUsernameChange = { username -> viewModel.setUsername(username) },
+        onPasswordChange = { password -> viewModel.setPassword(password) },
         onLoginClick = {
             viewModel.login()
-        },
+        }
     )
 }
 
@@ -59,15 +57,15 @@ private fun LoginScreen(
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.login_page_title),
@@ -80,7 +78,7 @@ private fun LoginScreen(
                 onValueChange = { onUsernameChange(it) },
                 label = { Text(stringResource(R.string.username_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
+                singleLine = true
             )
 
             TextField(
@@ -120,6 +118,9 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        navController = rememberNavController()
+        uiState = LoginUiState(),
+        onUsernameChange = {},
+        onPasswordChange = {},
+        onLoginClick = {}
     )
 }

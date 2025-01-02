@@ -7,4 +7,20 @@
     <string name="home">Home</string>
     <string name="list">List</string>
     <string name="login">Login</string>
+    <string name="creation">Creation</string>
+    <string name="medicine_name_text_field">Medicine Name</string>
+    <string name="medicine_name_validation_message">Name cannot be empty</string>
+    <string name="image_field">Captured Image</string>
+    <string name="image_button">Take Photo</string>
+    <string name="expiration_date_text_field">Expiration Date</string>
+    <string name="expiration_date_button">Select date</string>
+    <string name="expiration_date_validation_message">Expiration Date cannot be empty</string>
+    <string name="comment_text_field">Comment</string>
+    <string name="create_button">Create</string>
+    <string name="medicine_list_page_title">Medicine List</string>
+    <string name="medicine_name_column_title">Name</string>
+    <string name="medicine_expiration_date_column_title">Expiration Date</string>
+    <string name="medicine_comment_column_title">Comment</string>
+    <string name="medicine_comment_placeholder" />
+    <string name="create_medicine_button" >Create medicine</string>
 </resources>

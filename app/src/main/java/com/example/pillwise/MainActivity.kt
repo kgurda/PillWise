@@ -8,23 +8,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.pillwise.navigation.BottomNavigationBar
-import com.example.pillwise.ui.theme.PillWiseTheme
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.pillwise.feature.home.presentation.HomeScreen
-import com.example.pillwise.feature.list.presentation.ListScreen
 import com.example.pillwise.feature.login.presentation.LoginScreen
-import com.example.pillwise.feature.login.presentation.LoginViewModel
-import com.example.pillwise.navigation.HomeRoute
-import com.example.pillwise.navigation.ListRoute
-import com.example.pillwise.navigation.LoginRoute
+import com.example.pillwise.feature.medicine.creation.presentation.MedicineCreationScreen
+import com.example.pillwise.feature.medicine.list.presentation.MedicineListScreen
+import com.example.pillwise.navigation.BottomNavigationBar
+import com.example.pillwise.navigation.routes.HomeRoute
+import com.example.pillwise.navigation.routes.LoginRoute
+import com.example.pillwise.navigation.routes.MedicineCreationRoute
+import com.example.pillwise.navigation.routes.MedicineListRoute
+import com.example.pillwise.ui.theme.PillWiseTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -51,16 +51,19 @@ class MainActivity : ComponentActivity() {
                         NavHost(
                             navController = navController,
                             startDestination = HomeRoute,
-                            modifier = Modifier.padding(paddingValues = paddingValues)) {
+                            modifier = Modifier.padding(paddingValues = paddingValues)
+                        ) {
                             composable<HomeRoute> {
                                 HomeScreen(navController)
                             }
-                            composable<ListRoute> {
-                                ListScreen(navController)
+                            composable<MedicineListRoute> {
+                                MedicineListScreen(navController)
                             }
                             composable<LoginRoute> {
-                                val viewModel = hiltViewModel<LoginViewModel>()
-                                LoginScreen(navController, viewModel)
+                                LoginScreen(navController)
+                            }
+                            composable<MedicineCreationRoute> {
+                                MedicineCreationScreen(navController)
                             }
                         }
                     }

@@ -9,7 +9,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 class LoginUseCaseTest {
-
     private lateinit var loginRepository: LoginRepository
     private lateinit var loginUseCase: LoginUseCase
 
