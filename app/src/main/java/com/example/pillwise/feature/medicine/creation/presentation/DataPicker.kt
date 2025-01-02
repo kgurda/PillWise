@@ -40,7 +40,7 @@ fun DatePicker(
             },
             year,
             month,
-            day,
+            day
         ).apply {
             setOnDismissListener {
                 onDismiss()
@@ -57,6 +57,6 @@ private fun DatePickerPreview() {
     DatePicker(
         onDateSelected = {},
         shouldShowDataPicker = true,
-        onDismiss = {},
+        onDismiss = {}
     )
 }

@@ -46,7 +46,7 @@ fun MedicineListScreen(
     MedicineListScreen(
         uiState = uiState,
         onAddButtonClick = { navController.navigate(CreationRoute) },
-        modifier = modifier,
+        modifier = modifier
     )
 }
 
@@ -57,19 +57,19 @@ fun MedicineListScreen(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Column(
             modifier =
                 modifier
                     .fillMaxSize()
-                    .padding(16.dp),
+                    .padding(16.dp)
         ) {
             Text(
                 text = stringResource(R.string.medicine_list_page_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Row(
@@ -78,27 +78,27 @@ fun MedicineListScreen(
                         .fillMaxWidth()
                         .background(Color.LightGray)
                         .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     stringResource(R.string.medicine_name_column_title),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
                 )
                 Text(
                     stringResource(R.string.medicine_expiration_date_column_title),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
                 )
                 Text(
                     stringResource(R.string.medicine_comment_column_title),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
                 )
             }
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             ) {
                 items(uiState.medicines) { medicine ->
                     MedicineItem(medicine = medicine)
@@ -111,7 +111,7 @@ fun MedicineListScreen(
             modifier =
                 modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp),
+                    .padding(16.dp)
         ) {
             Icon(Icons.Filled.Add, stringResource(R.string.create_medicine_button))
         }
@@ -127,7 +127,7 @@ fun MedicineItem(medicine: Medicine) {
                 .padding(vertical = 4.dp)
                 .border(1.dp, Color.Gray, shape = RoundedCornerShape(4.dp))
                 .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(medicine.name, modifier = Modifier.weight(1f))
         Text(medicine.expirationDate, modifier = Modifier.weight(1f))
@@ -140,6 +140,6 @@ fun MedicineItem(medicine: Medicine) {
 private fun MedicineListScreenPreview() {
     MedicineListScreen(
         uiState = MedicineListUiState(),
-        onAddButtonClick = {},
+        onAddButtonClick = {}
     )
 }

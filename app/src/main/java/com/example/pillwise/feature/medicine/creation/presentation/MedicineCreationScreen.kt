@@ -66,7 +66,7 @@ fun MedicineCreationScreen(
         updateExpirationDate = { date -> viewModel.updateExpirationDate(date) },
         updateName = { name -> viewModel.updateName(name) },
         updateComment = { comment -> viewModel.updateComment(comment) },
-        create = { -> viewModel.create() },
+        create = { -> viewModel.create() }
     )
 }
 
@@ -86,7 +86,7 @@ fun MedicineCreationScreen(
             modifier
                 .fillMaxSize()
                 .padding(16.dp),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         MedicineCreationForm(
             uiState,
@@ -95,7 +95,7 @@ fun MedicineCreationScreen(
             updateExpirationDate = { date -> updateExpirationDate(date) },
             updateName = { name -> updateName(name) },
             updateComment = { comment -> updateComment(comment) },
-            create = { -> create() },
+            create = { -> create() }
         )
     }
 }
@@ -125,7 +125,7 @@ fun MedicineCreationForm(
             showDatePicker = false
         },
         shouldShowDataPicker = showDatePicker,
-        onDismiss = { showDatePicker = false },
+        onDismiss = { showDatePicker = false }
     )
 
     Column(
@@ -134,18 +134,18 @@ fun MedicineCreationForm(
                 .fillMaxSize()
                 .padding(16.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
             value = uiState.name,
             onValueChange = { updateName(it) },
             label = { Text(stringResource(R.string.medicine_name_text_field)) },
             modifier = Modifier.fillMaxWidth(),
-            isError = !validationState.isNameValid,
+            isError = !validationState.isNameValid
         )
         if (!validationState.isNameValid) {
             Text(
-                text = stringResource(R.string.medicine_name_validation_message),
+                text = stringResource(R.string.medicine_name_validation_message)
             )
         }
 
@@ -159,13 +159,13 @@ fun MedicineCreationForm(
                     Modifier
                         .size(200.dp)
                         .padding(bottom = 16.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(RoundedCornerShape(8.dp))
             )
         }
 
         Button(
             onClick = { cameraLauncher.launch(null) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.image_button))
         }
@@ -183,14 +183,14 @@ fun MedicineCreationForm(
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = stringResource(R.string.expiration_date_button),
+                        contentDescription = stringResource(R.string.expiration_date_button)
                     )
                 }
-            },
+            }
         )
         if (!validationState.isExpirationDateValid) {
             Text(
-                text = stringResource(R.string.expiration_date_validation_message),
+                text = stringResource(R.string.expiration_date_validation_message)
             )
         }
 
@@ -201,7 +201,7 @@ fun MedicineCreationForm(
             value = uiState.comment,
             onValueChange = { updateComment(it) },
             label = { Text(stringResource(R.string.comment_text_field)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -210,7 +210,7 @@ fun MedicineCreationForm(
         Button(
             onClick = { create() },
             modifier = Modifier.fillMaxWidth(),
-            enabled = (uiState.name.isNotEmpty() && uiState.expirationDate.isNotEmpty()) || uiState.isLoading == true,
+            enabled = (uiState.name.isNotEmpty() && uiState.expirationDate.isNotEmpty()) || uiState.isLoading == true
         ) {
             Text(stringResource(R.string.create_button))
         }
@@ -231,6 +231,6 @@ private fun MedicineCreationScreenPreview() {
         updateExpirationDate = {},
         updateName = {},
         updateComment = {},
-        create = {},
+        create = {}
     )
 }

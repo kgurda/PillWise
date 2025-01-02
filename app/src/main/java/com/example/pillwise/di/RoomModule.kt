@@ -24,7 +24,7 @@ class RoomModule {
         return Room.databaseBuilder(
             context,
             PillWiseDatabase::class.java,
-            DATABASE_NAME,
+            DATABASE_NAME
         )
             .build()
     }

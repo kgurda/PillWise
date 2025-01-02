@@ -38,20 +38,20 @@ class MainActivity : ComponentActivity() {
                 val currentDestination = navBackStackEntry?.destination
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Scaffold(
                         bottomBar = {
                             BottomNavigationBar(
                                 navController = navController,
-                                currentDestination = currentDestination,
+                                currentDestination = currentDestination
                             )
-                        },
+                        }
                     ) { paddingValues ->
                         NavHost(
                             navController = navController,
                             startDestination = HomeRoute,
-                            modifier = Modifier.padding(paddingValues = paddingValues),
+                            modifier = Modifier.padding(paddingValues = paddingValues)
                         ) {
                             composable<HomeRoute> {
                                 HomeScreen(navController)

@@ -23,7 +23,7 @@ class MedicineListViewModelTest {
         listOf(
             Medicine(name = "Medicine1", expirationDate = "date1", comment = null, image = null),
             Medicine(name = "Medicine2", expirationDate = "date2", comment = null, image = null),
-            Medicine(name = "Medicine3", expirationDate = "date3", comment = null, image = null),
+            Medicine(name = "Medicine3", expirationDate = "date3", comment = null, image = null)
         )
 
     @Before

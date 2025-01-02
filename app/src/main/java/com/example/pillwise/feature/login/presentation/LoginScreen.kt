@@ -47,7 +47,7 @@ fun LoginScreen(
         onPasswordChange = { password -> viewModel.setPassword(password) },
         onLoginClick = {
             viewModel.login()
-        },
+        }
     )
 }
 
@@ -61,16 +61,16 @@ private fun LoginScreen(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.login_page_title),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             TextField(
@@ -78,7 +78,7 @@ private fun LoginScreen(
                 onValueChange = { onUsernameChange(it) },
                 label = { Text(stringResource(R.string.username_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
+                singleLine = true
             )
 
             TextField(
@@ -87,13 +87,13 @@ private fun LoginScreen(
                 label = { Text(stringResource(R.string.password_text_field)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Button(
                 onClick = { onLoginClick() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = (uiState.username.isNotEmpty() && uiState.password.isNotEmpty()) || uiState.isLoading == true,
+                enabled = (uiState.username.isNotEmpty() && uiState.password.isNotEmpty()) || uiState.isLoading == true
             ) {
                 Text(stringResource(R.string.login_button_name))
             }
@@ -107,7 +107,7 @@ private fun LoginScreen(
                     fontSize = 14.sp,
                     text = uiState.error,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
@@ -121,6 +121,6 @@ private fun LoginScreenPreview() {
         uiState = LoginUiState(),
         onUsernameChange = {},
         onPasswordChange = {},
-        onLoginClick = {},
+        onLoginClick = {}
     )
 }

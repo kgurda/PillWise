@@ -18,7 +18,7 @@ internal class LoginRepositoryImpl
         ): Result<Unit> {
             val map =
                 mapOf<String, String>(
-                    "admin" to "admin",
+                    "admin" to "admin"
                 )
             val hasValidCredentials = map[username] == password
             return if (hasValidCredentials) {

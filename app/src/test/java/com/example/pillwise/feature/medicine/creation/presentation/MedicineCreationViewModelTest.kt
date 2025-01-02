@@ -122,8 +122,8 @@ class MedicineCreationViewModelTest {
                     name = name,
                     expirationDate = date,
                     comment = comment,
-                    image = image.toString(),
-                ),
+                    image = image.toString()
+                )
             )
         }
 

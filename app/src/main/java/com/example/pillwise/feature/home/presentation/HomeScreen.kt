@@ -24,7 +24,7 @@ fun HomeScreen(
             modifier
                 .fillMaxSize()
                 .padding(16.dp),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         Button(onClick = { navController.navigate(LoginRoute) }) {
             Text("Go to Login")
@@ -36,6 +36,6 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen(
-        navController = rememberNavController(),
+        navController = rememberNavController()
     )
 }

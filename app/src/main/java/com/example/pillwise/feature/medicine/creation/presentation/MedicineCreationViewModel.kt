@@ -56,7 +56,7 @@ class MedicineCreationViewModel
                 _validationState.update {
                     it.copy(
                         isNameValid = isNameValid,
-                        isExpirationDateValid = isExpirationDateValid,
+                        isExpirationDateValid = isExpirationDateValid
                     )
                 }
 
@@ -67,8 +67,8 @@ class MedicineCreationViewModel
                             expirationDate = currentState.expirationDate,
                             comment = currentState.comment,
                             // TODO it is temporary, the logic to upload photo will be implemented
-                            image = currentState.capturedImage.toString(),
-                        ),
+                            image = currentState.capturedImage.toString()
+                        )
                     )
                 }
 

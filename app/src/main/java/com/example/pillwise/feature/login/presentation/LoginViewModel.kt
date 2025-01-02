@@ -25,7 +25,7 @@ class LoginViewModel
             _uiState.update {
                 it.copy(
                     username = username,
-                    error = null,
+                    error = null
                 )
             }
         }
@@ -34,7 +34,7 @@ class LoginViewModel
             _uiState.update {
                 it.copy(
                     password = password,
-                    error = null,
+                    error = null
                 )
             }
         }
@@ -45,7 +45,7 @@ class LoginViewModel
                     it.copy(
                         isLoading = true,
                         loggedIn = false,
-                        error = null,
+                        error = null
                     )
                 }
 
@@ -54,7 +54,7 @@ class LoginViewModel
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                loggedIn = true,
+                                loggedIn = true
                             )
                         }
                     }
@@ -62,7 +62,7 @@ class LoginViewModel
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                error = result.message,
+                                error = result.message
                             )
                         }
                     }
@@ -72,7 +72,7 @@ class LoginViewModel
             viewModelScope.launch {
                 _uiState.update {
                     it.copy(
-                        loggedIn = false,
+                        loggedIn = false
                     )
                 }
             }

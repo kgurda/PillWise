@@ -34,7 +34,7 @@ fun BottomNavigationBar(
         listOf(
             PillWiseTopLevelRoute(R.string.home, Icons.Default.Home, HomeRoute),
             PillWiseTopLevelRoute(R.string.login, Icons.Default.Lock, LoginRoute),
-            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute),
+            PillWiseTopLevelRoute(R.string.list, Icons.AutoMirrored.Filled.List, ListRoute)
         )
 
     NavigationBar {
@@ -43,14 +43,14 @@ fun BottomNavigationBar(
                 icon = {
                     Icon(
                         topLevelRoute.icon,
-                        contentDescription = stringResource(topLevelRoute.name),
+                        contentDescription = stringResource(topLevelRoute.name)
                     )
                 },
                 label = { if (!isMobile) Text(stringResource(topLevelRoute.name)) else null },
                 selected =
                     currentDestination?.hierarchy?.any {
                         it.hasRoute(
-                            topLevelRoute.route::class,
+                            topLevelRoute.route::class
                         )
                     } == true,
                 onClick = {
@@ -58,7 +58,7 @@ fun BottomNavigationBar(
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
                     }
-                },
+                }
             )
         }
     }

@@ -26,7 +26,7 @@ private val DarkColorScheme =
         onSecondary = OnPrimaryDark,
         onTertiary = OnPrimaryDark,
         onBackground = OnBackgroundDark,
-        onSurface = OnBackgroundDark,
+        onSurface = OnBackgroundDark
     )
 
 private val LightColorScheme =
@@ -40,7 +40,7 @@ private val LightColorScheme =
         onSecondary = OnPrimaryLight,
         onTertiary = OnPrimaryLight,
         onBackground = OnBackgroundLight,
-        onSurface = OnBackgroundLight,
+        onSurface = OnBackgroundLight
     )
 
 @Composable
@@ -71,6 +71,6 @@ fun PillWiseTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content,
+        content = content
     )
 }
