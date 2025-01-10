@@ -26,6 +26,7 @@ class RoomModule {
             PillWiseDatabase::class.java,
             DATABASE_NAME
         )
+            .fallbackToDestructiveMigration()
             .build()
     }
 

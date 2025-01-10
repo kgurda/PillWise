@@ -7,6 +7,8 @@ import javax.inject.Inject
 
 interface MedicineListRepository {
     fun getAll(): Flow<List<Medicine>>
+
+    suspend fun delete(id: Long)
 }
 
 internal class MedicineListRepositoryImpl
@@ -15,4 +17,6 @@ internal class MedicineListRepositoryImpl
         private val medicineDao: MedicineDao
     ) : MedicineListRepository {
         override fun getAll() = medicineDao.getAll()
+
+        override suspend fun delete(id: Long) = medicineDao.delete(id)
     }

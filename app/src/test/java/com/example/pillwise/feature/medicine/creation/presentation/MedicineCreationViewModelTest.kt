@@ -15,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -101,6 +102,7 @@ class MedicineCreationViewModelTest {
             val date = "2024-12-31"
             val comment = "Take with water."
             val image = mock(Bitmap::class.java)
+            val captor = argumentCaptor<Medicine>()
 
             viewModel.updateName(name)
             viewModel.updateExpirationDate(date)
@@ -117,14 +119,12 @@ class MedicineCreationViewModelTest {
             assertEquals(true, viewModel.validationState.value.isExpirationDateValid)
             assertEquals(true, viewModel.uiState.value.created)
 
-            verify(medicineRepository, times(1)).create(
-                Medicine(
-                    name = name,
-                    expirationDate = date,
-                    comment = comment,
-                    image = image.toString()
-                )
-            )
+            verify(medicineRepository, times(1)).create(captor.capture())
+            val result = captor.firstValue
+            assertEquals(name, result.name)
+            assertEquals(date, result.expirationDate)
+            assertEquals(comment, result.comment)
+            assert(result.image is ByteArray)
         }
 
     @Test
