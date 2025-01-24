@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,9 +34,14 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -108,9 +114,9 @@ fun MedicineListScreen(
     ) { padding ->
         Column(
             modifier =
-                modifier
-                    .fillMaxSize()
-                    .padding(padding)
+            modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -128,18 +134,27 @@ fun DismissibleCard(
     medicine: Medicine,
     deleteMedicine: (id: Long) -> Unit
 ) {
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
     val dismissState =
         rememberSwipeToDismissBoxState(
             confirmValueChange = { dismissValue ->
                 if (dismissValue == SwipeToDismissBoxValue.StartToEnd) {
-                    deleteMedicine(medicine.id)
-                    return@rememberSwipeToDismissBoxState true
+                    showDialog = true
+                    return@rememberSwipeToDismissBoxState false
                 } else {
                     return@rememberSwipeToDismissBoxState false
                 }
             },
             positionalThreshold = { it * .25f }
         )
+    if (showDialog) {
+        ConfirmationBox(
+            hideDialog = { showDialog = false },
+            medicine = medicine,
+            deleteMedicine = deleteMedicine
+        )
+    }
     SwipeToDismissBox(
         state = dismissState,
         modifier = Modifier,
@@ -147,6 +162,32 @@ fun DismissibleCard(
         backgroundContent = { DismissBackground(dismissState) },
         content = {
             MedicineCard(medicine)
+        }
+    )
+}
+
+@Composable
+fun ConfirmationBox(
+    hideDialog: () -> Unit,
+    medicine: Medicine,
+    deleteMedicine: (id: Long) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = hideDialog,
+        title = { Text(text = stringResource(R.string.confirm_delete_title)) },
+        text = { Text(text = stringResource(R.string.confirm_delete_message, medicine.name)) },
+        confirmButton = {
+            TextButton(onClick = {
+                deleteMedicine(medicine.id)
+                hideDialog
+            }) {
+                Text(text = stringResource(R.string.confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = hideDialog) {
+                Text(text = stringResource(R.string.cancel))
+            }
         }
     )
 }
