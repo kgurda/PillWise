@@ -4,18 +4,18 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,12 +23,12 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxState
@@ -38,12 +38,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -59,8 +61,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.pillwise.R
-import com.example.pillwise.data.local.entities.Medicine
 import com.example.pillwise.feature.medicine.list.presentation.model.MedicineListUiState
+import com.example.pillwise.feature.medicine.list.presentation.model.MedicineUiState
 import com.example.pillwise.feature.medicine.presentation.BitmapConverter
 import com.example.pillwise.navigation.routes.MedicineCreationRoute
 
@@ -76,6 +78,7 @@ fun MedicineListScreen(
         uiState = uiState,
         onAddButtonClick = { navController.navigate(MedicineCreationRoute) },
         deleteMedicine = { id: Long -> viewModel.deleteItem(id) },
+        markItemForDeletion = { id: Long, isMarked: Boolean -> viewModel.markItemForDeletion(id, isMarked) },
         modifier = modifier
     )
 }
@@ -86,6 +89,7 @@ fun MedicineListScreen(
     uiState: MedicineListUiState,
     onAddButtonClick: () -> Unit,
     deleteMedicine: (id: Long) -> Unit,
+    markItemForDeletion: (id: Long, isMarked: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -121,8 +125,25 @@ fun MedicineListScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(uiState.medicines) { medicine ->
-                    DismissibleCard(medicine = medicine, deleteMedicine = deleteMedicine)
+                itemsIndexed(uiState.medicines) { index, medicine ->
+                    Column(
+                        modifier =
+                            Modifier
+                                .then(
+                                    if (medicine.isMarkedForDeletion) {
+                                        Modifier.alpha(0f).height(0.dp)
+                                    } else {
+                                        Modifier
+                                    }
+                                )
+                    ) {
+                        DismissibleCard(
+                            medicine = medicine,
+                            markItemForDeletion = markItemForDeletion,
+                            deleteMedicine = deleteMedicine
+                        )
+                        DividerBetweenItems(index, uiState.medicines.lastIndex)
+                    }
                 }
             }
         }
@@ -130,8 +151,25 @@ fun MedicineListScreen(
 }
 
 @Composable
+fun DividerBetweenItems(
+    index: Int,
+    itemCount: Int
+) {
+    if (index < itemCount) {
+        HorizontalDivider(
+            modifier =
+                Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+            thickness = 1.dp
+        )
+    }
+}
+
+@Composable
 fun DismissibleCard(
-    medicine: Medicine,
+    medicine: MedicineUiState,
+    markItemForDeletion: (id: Long, isMarked: Boolean) -> Unit,
     deleteMedicine: (id: Long) -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -141,6 +179,7 @@ fun DismissibleCard(
             confirmValueChange = { dismissValue ->
                 if (dismissValue == SwipeToDismissBoxValue.StartToEnd) {
                     showDialog = true
+                    markItemForDeletion(medicine.id, true)
                     return@rememberSwipeToDismissBoxState false
                 } else {
                     return@rememberSwipeToDismissBoxState false
@@ -152,6 +191,7 @@ fun DismissibleCard(
         ConfirmationBox(
             hideDialog = { showDialog = false },
             medicine = medicine,
+            markItemForDeletion = markItemForDeletion,
             deleteMedicine = deleteMedicine
         )
     }
@@ -169,7 +209,8 @@ fun DismissibleCard(
 @Composable
 fun ConfirmationBox(
     hideDialog: () -> Unit,
-    medicine: Medicine,
+    medicine: MedicineUiState,
+    markItemForDeletion: (id: Long, isMarked: Boolean) -> Unit,
     deleteMedicine: (id: Long) -> Unit
 ) {
     AlertDialog(
@@ -185,7 +226,10 @@ fun ConfirmationBox(
             }
         },
         dismissButton = {
-            TextButton(onClick = hideDialog) {
+            TextButton(onClick = {
+                markItemForDeletion(medicine.id, false)
+                hideDialog()
+            }) {
                 Text(text = stringResource(R.string.cancel))
             }
         }
@@ -218,42 +262,41 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
 }
 
 @Composable
-fun MedicineCard(medicine: Medicine) {
-    Card(
+fun MedicineCard(medicine: MedicineUiState) {
+    Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { println() },
-        elevation = CardDefaults.cardElevation(4.dp)
+            Modifier.padding(8.dp, 0.dp)
+                .background(MaterialTheme.colorScheme.background),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ImageField(medicine.image?.let { BitmapConverter.convertByteArrayToBitmap(it) })
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = medicine.name, fontSize = 28.sp)
-                Text(medicine.comment ?: stringResource(R.string.medicine_comment_placeholder), fontSize = 14.sp)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = stringResource(R.string.expiration_date_button),
-                        modifier = Modifier.size(12.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = medicine.expirationDate,
-                        fontSize = 12.sp
-                    )
-                }
+        ImageField(medicine.image?.let { BitmapConverter.convertByteArrayToBitmap(it) })
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = medicine.name, fontSize = 28.sp)
+            Text(
+                medicine.comment ?: stringResource(R.string.medicine_comment_placeholder),
+                fontSize = 14.sp
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = stringResource(R.string.expiration_date_button),
+                    modifier = Modifier.size(12.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = medicine.expirationDate,
+                    fontSize = 12.sp
+                )
             }
-            IconButton(onClick = { println() }) {
-                Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit_content_description))
-            }
+        }
+        IconButton(onClick = { println() }) {
+            Icon(
+                Icons.Default.Edit,
+                contentDescription = stringResource(R.string.edit_content_description)
+            )
         }
     }
 }
@@ -286,21 +329,21 @@ private fun MedicineListScreenPreview() {
             MedicineListUiState(
                 medicines =
                     listOf(
-                        Medicine(
+                        MedicineUiState(
                             id = 1,
                             name = "test",
                             expirationDate = "2025-01-01",
                             comment = "test",
                             image = null
                         ),
-                        Medicine(
+                        MedicineUiState(
                             id = 2,
                             name = "test 2",
                             expirationDate = "2025-01-02",
                             comment = "test",
                             image = null
                         ),
-                        Medicine(
+                        MedicineUiState(
                             id = 3,
                             name = "test 3",
                             expirationDate = "2025-01-10",
@@ -310,6 +353,7 @@ private fun MedicineListScreenPreview() {
                     )
             ),
         onAddButtonClick = {},
-        deleteMedicine = {}
+        deleteMedicine = {},
+        markItemForDeletion = { _, _ -> {} }
     )
 }

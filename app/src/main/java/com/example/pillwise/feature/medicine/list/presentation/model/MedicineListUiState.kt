@@ -1,7 +1,14 @@
 package com.example.pillwise.feature.medicine.list.presentation.model
 
-import com.example.pillwise.data.local.entities.Medicine
-
 data class MedicineListUiState(
-    var medicines: List<Medicine> = emptyList<Medicine>()
+    var medicines: List<MedicineUiState> = emptyList<MedicineUiState>()
+)
+
+data class MedicineUiState(
+    var id: Long,
+    var name: String,
+    var expirationDate: String,
+    var comment: String?,
+    var image: ByteArray?,
+    var isMarkedForDeletion: Boolean = false
 )
