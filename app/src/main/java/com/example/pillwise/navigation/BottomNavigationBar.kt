@@ -19,6 +19,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.pillwise.R
 import com.example.pillwise.navigation.routes.HomeRoute
 import com.example.pillwise.navigation.routes.LoginRoute
+import com.example.pillwise.navigation.routes.MedicineCreationRoute
 import com.example.pillwise.navigation.routes.MedicineListRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +53,10 @@ fun BottomNavigationBar(
                         it.hasRoute(
                             topLevelRoute.route::class
                         )
-                    } == true,
+                    } == true || (
+                        currentDestination?.route == MedicineCreationRoute.javaClass.name &&
+                            topLevelRoute.route == MedicineListRoute
+                    ),
                 onClick = {
                     navController.navigate(topLevelRoute.route) {
                         popUpTo(navController.graph.startDestinationId)

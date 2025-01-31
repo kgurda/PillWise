@@ -114,9 +114,9 @@ fun MedicineListScreen(
     ) { padding ->
         Column(
             modifier =
-            modifier
-                .fillMaxSize()
-                .padding(padding)
+                modifier
+                    .fillMaxSize()
+                    .padding(padding)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -179,7 +179,7 @@ fun ConfirmationBox(
         confirmButton = {
             TextButton(onClick = {
                 deleteMedicine(medicine.id)
-                hideDialog
+                hideDialog()
             }) {
                 Text(text = stringResource(R.string.confirm))
             }
