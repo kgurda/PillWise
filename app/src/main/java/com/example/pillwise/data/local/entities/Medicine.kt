@@ -1,5 +1,6 @@
 package com.example.pillwise.data.local.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,5 +10,6 @@ data class Medicine(
     val name: String,
     val expirationDate: String,
     val comment: String?,
-    val image: String?
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    val image: ByteArray?
 )

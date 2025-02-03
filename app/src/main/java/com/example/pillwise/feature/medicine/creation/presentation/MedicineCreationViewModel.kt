@@ -7,6 +7,7 @@ import com.example.pillwise.data.local.entities.Medicine
 import com.example.pillwise.feature.medicine.creation.presentation.data.MedicineCreationRepository
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationUiState
 import com.example.pillwise.feature.medicine.creation.presentation.model.MedicineCreationValidationState
+import com.example.pillwise.feature.medicine.presentation.BitmapConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,13 +62,16 @@ class MedicineCreationViewModel
                 }
 
                 if (isNameValid && isExpirationDateValid) {
+                    val image =
+                        currentState.capturedImage?.let { bitmap ->
+                            BitmapConverter.convertBitmapToString(bitmap)
+                        }
                     medicineRepository.create(
                         Medicine(
                             name = currentState.name,
                             expirationDate = currentState.expirationDate,
                             comment = currentState.comment,
-                            // TODO it is temporary, the logic to upload photo will be implemented
-                            image = currentState.capturedImage.toString()
+                            image = image
                         )
                     )
                 }

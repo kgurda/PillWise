@@ -17,4 +17,7 @@ interface MedicineDao {
 
     @Query("DELETE FROM medicines")
     suspend fun clear()
+
+    @Query("DELETE FROM medicines WHERE id = :id")
+    suspend fun delete(id: Long)
 }

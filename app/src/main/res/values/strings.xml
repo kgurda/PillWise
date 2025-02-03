@@ -17,10 +17,17 @@
     <string name="expiration_date_validation_message">Expiration Date cannot be empty</string>
     <string name="comment_text_field">Comment</string>
     <string name="create_button">Create</string>
-    <string name="medicine_list_page_title">Medicine List</string>
+    <string name="medicine_list_page_title">Your Medicines</string>
     <string name="medicine_name_column_title">Name</string>
     <string name="medicine_expiration_date_column_title">Expiration Date</string>
     <string name="medicine_comment_column_title">Comment</string>
     <string name="medicine_comment_placeholder" />
-    <string name="create_medicine_button" >Create medicine</string>
+    <string name="create_medicine_button">Create medicine</string>
+    <string name="delete_content_description">Delete</string>
+    <string name="edit_content_description">Edit</string>
+    <string name="image_content_description">Image</string>
+    <string name="confirm_delete_title">Confirm deletion</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this item?</string>
+    <string name="confirm">Yes</string>
+    <string name="cancel">No</string>
 </resources>

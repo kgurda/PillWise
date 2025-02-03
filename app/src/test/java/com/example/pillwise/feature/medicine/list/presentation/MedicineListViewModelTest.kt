@@ -3,7 +3,6 @@ import com.example.pillwise.feature.medicine.list.presentation.MedicineListViewM
 import com.example.pillwise.feature.medicine.list.presentation.data.MedicineListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -14,6 +13,8 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MedicineListViewModelTest {
@@ -21,21 +22,18 @@ class MedicineListViewModelTest {
     private lateinit var viewModel: MedicineListViewModel
     private var medicines: List<Medicine> =
         listOf(
-            Medicine(name = "Medicine1", expirationDate = "date1", comment = null, image = null),
-            Medicine(name = "Medicine2", expirationDate = "date2", comment = null, image = null),
-            Medicine(name = "Medicine3", expirationDate = "date3", comment = null, image = null)
+            Medicine(id = 1L, name = "Medicine1", expirationDate = "date1", comment = null, image = null),
+            Medicine(id = 2L, name = "Medicine2", expirationDate = "date2", comment = null, image = null),
+            Medicine(id = 3L, name = "Medicine3", expirationDate = "date3", comment = null, image = null)
         )
+
+    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(StandardTestDispatcher())
-        medicineRepository =
-            object : MedicineListRepository {
-                override fun getAll(): Flow<List<Medicine>> =
-                    flow {
-                        emit(medicines)
-                    }
-            }
+        Dispatchers.setMain(testDispatcher)
+        medicineRepository = mock()
+        `when`(medicineRepository.getAll()).thenReturn(flow { emit(medicines) })
         viewModel = MedicineListViewModel(medicineRepository)
     }
 
@@ -52,5 +50,21 @@ class MedicineListViewModelTest {
 
             // Then
             assertEquals(viewModel.uiState.value.medicines, medicines)
+        }
+
+    @Test
+    fun `should delete item from uiState`() =
+        runTest {
+            // Given
+            val idToDelete = 1L
+            viewModel = MedicineListViewModel(medicineRepository)
+
+            // When
+            viewModel.deleteItem(idToDelete)
+            advanceUntilIdle()
+
+            // Then
+            val expectedMedicines = medicines.filter { it.id != idToDelete }
+            assertEquals(expectedMedicines, viewModel.uiState.value.medicines)
         }
 }

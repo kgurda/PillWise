@@ -41,6 +41,9 @@ fun DatePicker(onDateSelected: (String) -> Unit) {
             setOnDismissListener {
                 showDatePicker = false
             }
+            datePicker.apply {
+                minDate = calendar.timeInMillis
+            }
             show()
         }
     }
